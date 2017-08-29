@@ -42,5 +42,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OCS.DataAccess\OCS.DataAccess.csproj">
+      <Project>{8f61c675-e7e2-4adf-bbe1-60beea128dd5}</Project>
+      <Name>OCS.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
