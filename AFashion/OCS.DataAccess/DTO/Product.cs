@@ -5,19 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace OCS.DataAccess.DTO
 {
     [Table("Product")]
-    public class Product
+    public class Product : IEntity
     {
         [Key]
-        public Guid ProductID { get; set; }
-        
+        [Column("ProductID")]
+        public Guid ID { get; set; }
+
         [Required]
         [Index(IsUnique =true)]
         [StringLength(50)]
-        public string ProductName { get; set; }
+        [Column("ProductName")]
+        public string Name { get; set; }
 
         [Required]
         [Range(0, 9999)]
-        public double ProductPrice { get; set; }
+        [Column("ProductPrice")]
+        public double Price { get; set; }
 
         [Required]
         public Brand Brand { get; set; }
@@ -26,6 +29,7 @@ namespace OCS.DataAccess.DTO
         public Category Category { get; set; }
 
         [Required]
+        [Column("ProductImageUrl")]
         public string Image { get; set; }
     }
 }

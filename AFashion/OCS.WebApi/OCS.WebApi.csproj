@@ -146,6 +146,10 @@
       <Project>{2dcdbde7-3502-4fe9-8535-beb1d664dc42}</Project>
       <Name>OCS.BusinessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OCS.DataAccess\OCS.DataAccess.csproj">
+      <Project>{8f61c675-e7e2-4adf-bbe1-60beea128dd5}</Project>
+      <Name>OCS.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

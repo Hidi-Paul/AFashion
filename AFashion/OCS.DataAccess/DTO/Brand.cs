@@ -6,15 +6,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace OCS.DataAccess.DTO
 {
     [Table("Brand")]
-    public class Brand
+    public class Brand : IEntity
     {
         [Key]
-        public Guid BrandID { get; set; }
+        [Column("BrandID")]
+        public Guid ID { get; set; }
 
         [Required]
         [Index(IsUnique = true)]
         [StringLength(50)]
-        public string BrandName { get; set; }
+        [Column("BrandName")]
+        public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }
