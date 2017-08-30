@@ -1,10 +1,5 @@
 ﻿using OCS.DataAccess.DTO;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OCS.DataAccess.Context
 {

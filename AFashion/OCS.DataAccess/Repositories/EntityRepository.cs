@@ -1,10 +1,8 @@
-﻿using OCS.DataAccess.DTO;
+﻿using OCS.DataAccess.Context;
+using OCS.DataAccess.DTO;
 using System;
 using System.Collections.Generic;
-using OCS.DataAccess.Context;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OCS.DataAccess.Repositories
 {
