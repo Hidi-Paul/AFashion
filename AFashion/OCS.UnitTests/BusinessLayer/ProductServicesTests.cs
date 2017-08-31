@@ -23,8 +23,7 @@ namespace OCS.UnitTests.BusinessLogic
         [SetUp]
         public void Init()
         {
-
-            //All initializations
+            //Initializations
             AutoMapperServicesConfig.Configure();
 
             productRepo = new Mock<IEntityRepository<Product>>();

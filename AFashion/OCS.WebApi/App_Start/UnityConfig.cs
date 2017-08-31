@@ -1,8 +1,5 @@
-using System;
 using Microsoft.Practices.Unity;
-using System.Data;
-using Microsoft.Practices.Unity.Configuration;
-using OCS.DataAccess.Context;
+using System;
 
 namespace OCS.WebApi.App_Start
 {
