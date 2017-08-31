@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OCS.DataAccess.Repositories;
-using OCS.DataAccess.DTO;
+﻿using AutoMapper;
 using OCS.BusinessLayer.Models;
-using AutoMapper;
+using OCS.DataAccess.DTO;
+using OCS.DataAccess.Repositories;
+using System.Collections.Generic;
 
 namespace OCS.BusinessLayer.Services
 {
-    public class CategoryServices
+    public class CategoryServices : ICategoryServices
     {
         private readonly IEntityRepository<Category> repository;
 

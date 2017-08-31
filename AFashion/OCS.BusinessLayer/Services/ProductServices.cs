@@ -26,9 +26,9 @@ namespace OCS.BusinessLayer.Services
 
         public IEnumerable<ProductModel> GetAll()
         {
-            IEnumerable<Product> listOfProducts = repository.GetAll();
+            IEnumerable<Product> productList = repository.GetAll();
 
-            IEnumerable<ProductModel> mappedProducts = Mapper.Map<IEnumerable<ProductModel>>(listOfProducts);
+            IEnumerable<ProductModel> mappedProducts = Mapper.Map<IEnumerable<ProductModel>>(productList);
 
             return mappedProducts;
         }
@@ -36,56 +36,59 @@ namespace OCS.BusinessLayer.Services
         public ProductModel GetByID(Guid id)
         {
             Product product = repository.GetByID(id);
+
             ProductModel mappedProduct = Mapper.Map<ProductModel>(product);
+
             return mappedProduct;
         }
 
         public void AddProduct(ProductModel productModel)
         {
-            Product mappedProduct = Mapper.Map<Product>(productModel);
+            Product product = Mapper.Map<Product>(productModel);
 
-            mappedProduct.ID = Guid.NewGuid();
+            product.ID = Guid.NewGuid();
 
             var brand = brandRepository.GetByName(productModel.Brand);
             if (brand != null)
             {
-                mappedProduct.Brand = brand;
+                product.Brand = brand;
             }
             var categ = categoryRepository.GetByName(productModel.Category);
             if (categ != null)
             {
-                mappedProduct.Category = categ;
+                product.Category = categ;
             }
 
-            repository.AddOrUpdate(mappedProduct);
+            repository.AddOrUpdate(product);
             repository.SaveChanges();
         }
 
         public IEnumerable<ProductModel> FilteredSearch(string searchString, IEnumerable<CategoryModel> categories = null, IEnumerable<BrandModel> brands = null)
         {
-            IEnumerable<Product> products = repository.GetAll().ToList();
+            IEnumerable<Product> productList = repository.GetAll().ToList();
             AbstractFilter filter = new AbstractFilter();
             if (searchString != null)
             {
-                filter = new NameFilter(products, searchString, filter);
+                filter = new NameFilter(productList, searchString, filter);
             }
             if (categories != null)
             {
                 foreach (var categ in categories)
                 {
-                    filter = new CategoryFilter(products, categ.Name, filter);
+                    filter = new CategoryFilter(productList, categ.Name, filter);
                 }
             }
             if (brands != null)
             {
                 foreach (var brand in brands)
                 {
-                    filter = new BrandFilter(products, brand.Name, filter);
+                    filter = new BrandFilter(productList, brand.Name, filter);
                 }
             }
-            FilterResult result = filter.Resolve();
-            var filteredProducts = result.Result();
+            FilterResult filterResult = filter.Resolve();
+            var filteredProducts = filterResult.Result();
             Mapper.Map<IEnumerable<ProductModel>>(filteredProducts);
+
             return Mapper.Map<IEnumerable<ProductModel>>(filteredProducts);
         }
     }

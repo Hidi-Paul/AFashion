@@ -11,7 +11,7 @@ using System.Linq;
 namespace OCS.UnitTests.DataAccess
 {
     [TestFixture]
-    public class EntityRepositoryUnitTests
+    public class EntityRepositoryTests
     {
         //Declarations
         private EntityRepository<IEntity> repo;

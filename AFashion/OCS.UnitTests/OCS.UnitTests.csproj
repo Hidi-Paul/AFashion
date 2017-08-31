@@ -65,7 +65,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\EntityRepositoryUnitTests.cs" />
+    <Compile Include="BusinessLayer\BrandServicesTests.cs" />
+    <Compile Include="BusinessLayer\CategoryServicesTests.cs" />
+    <Compile Include="BusinessLayer\ProductServicesTests.cs" />
+    <Compile Include="DataAccess\EntityRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +76,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessLayer\" />
+    <Folder Include="BusinessLayer\Filters\" />
     <Folder Include="MVC\" />
     <Folder Include="WebApi\" />
   </ItemGroup>
