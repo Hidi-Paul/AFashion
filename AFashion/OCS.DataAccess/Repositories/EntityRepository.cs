@@ -34,7 +34,7 @@ namespace OCS.DataAccess.Repositories
             }
             return null;
         }
-
+        
         public IEnumerable<TEntity> GetAll()
         {
             var set = DbCon.Set<TEntity>();
@@ -54,6 +54,7 @@ namespace OCS.DataAccess.Repositories
             }
             return null;
         }
+
         public TEntity GetByName(string name)
         {
             var set = DbCon.Set<TEntity>();
@@ -68,6 +69,5 @@ namespace OCS.DataAccess.Repositories
         {
             return DbCon.SaveChanges();
         }
-
     }
 }
