@@ -10,7 +10,7 @@ namespace OCS.BusinessLayer.Services
 
         ProductModel GetByID(Guid id);
 
-        void AddProduct(ProductModel productModel);
+        Guid AddProduct(ProductModel productModel);
 
         IEnumerable<ProductModel> FilteredSearch(string searchString, IEnumerable<CategoryModel> categories, IEnumerable<BrandModel> brands);
     }

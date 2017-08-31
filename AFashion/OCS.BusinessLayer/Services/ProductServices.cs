@@ -42,7 +42,7 @@ namespace OCS.BusinessLayer.Services
             return mappedProduct;
         }
 
-        public void AddProduct(ProductModel productModel)
+        public Guid AddProduct(ProductModel productModel)
         {
             Product product = Mapper.Map<Product>(productModel);
 
@@ -61,6 +61,8 @@ namespace OCS.BusinessLayer.Services
 
             repository.AddOrUpdate(product);
             repository.SaveChanges();
+
+            return product.ID;
         }
 
         public IEnumerable<ProductModel> FilteredSearch(string searchString, IEnumerable<CategoryModel> categories = null, IEnumerable<BrandModel> brands = null)

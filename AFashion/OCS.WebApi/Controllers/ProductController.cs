@@ -61,21 +61,18 @@ namespace OCS.WebApi.Controllers
         [Route("PostProduct")]
         public IHttpActionResult PostProduct([FromBody] ProductModel product)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || product == null)
             {
                 return BadRequest("Invalid data.");
             }
-            else
+            try
             {
-                try
-                {
-                    productServices.AddProduct(product);
-                    return Created(Request.RequestUri + $"/{product.ID}", product);
-                }
-                catch (Exception e)
-                {
-                    return InternalServerError(e);
-                }
+                var productID = productServices.AddProduct(product);
+                return Created(Request.RequestUri + $"/{productID}", product);
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
             }
         }
 
@@ -83,25 +80,16 @@ namespace OCS.WebApi.Controllers
         [Route("Filter")]
         public IHttpActionResult GetFiltered([FromUri]string urlParams)
         {
-            try
+            if (urlParams==null||urlParams.Length==0)
             {
-                var model = new JavaScriptSerializer().Deserialize<FiltersModel>(urlParams);
+                return BadRequest("Invalid data.");
+            }
+            var model = new JavaScriptSerializer().Deserialize<FiltersModel>(urlParams);
 
-                IEnumerable<ProductModel> products;
-                if (model.Brands == null && model.Categories == null && model.SearchString == null)
-                {
-                    products = this.productServices.GetAll();
-                }
-                else
-                {
-                    products = this.productServices.FilteredSearch(model.SearchString, model.Categories, model.Brands);
-                }
-                return this.Ok(products);
-            }
-            catch (Exception e)
-            {
-                return InternalServerError(e);
-            }
+            IEnumerable<ProductModel> products;
+            products = this.productServices.FilteredSearch(model.SearchString, model.Categories, model.Brands);
+
+            return this.Ok(products);
         }
     }
 }
