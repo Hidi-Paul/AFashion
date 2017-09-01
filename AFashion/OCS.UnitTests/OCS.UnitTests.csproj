@@ -71,6 +71,10 @@
   <ItemGroup>
     <Compile Include="BusinessLayer\BrandServicesTests.cs" />
     <Compile Include="BusinessLayer\CategoryServicesTests.cs" />
+    <Compile Include="BusinessLayer\Filters\BrandFilterTests.cs" />
+    <Compile Include="BusinessLayer\Filters\CategoryFilterTests.cs" />
+    <Compile Include="BusinessLayer\Filters\FilterResultTests.cs" />
+    <Compile Include="BusinessLayer\Filters\NameFilterTests.cs" />
     <Compile Include="BusinessLayer\ProductServicesTests.cs" />
     <Compile Include="DataAccess\EntityRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,7 +87,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessLayer\Filters\" />
     <Folder Include="MVC\" />
   </ItemGroup>
   <ItemGroup>
