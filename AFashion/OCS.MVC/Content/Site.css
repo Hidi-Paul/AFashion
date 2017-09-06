@@ -1,1 +1,4 @@
-﻿
+﻿body {
+    /*Bootstrap padding so it doesnt eat about 60 pixels from body*/
+    padding-top: 70px;
+}

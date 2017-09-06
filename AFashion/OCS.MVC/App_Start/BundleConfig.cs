@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace OCS.MVC.App_Start
 {
@@ -29,6 +25,7 @@ namespace OCS.MVC.App_Start
                       "~/Content/Site.css",
                       "~/Content/FilterStyle.css",
                       "~/Content/ProductStyle.css"));
+
         }
     }
 }
