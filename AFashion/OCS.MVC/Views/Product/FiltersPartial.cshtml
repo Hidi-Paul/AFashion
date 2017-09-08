@@ -1,0 +1,44 @@
+﻿@model OCS.MVC.Models.FiltersViewModel
+
+<div class="col-md-2 storeLeftBar">
+    @*Search Bar*@
+    <div class="searchContainer">
+        <input id="searchBar" class="form-control mr-sm-2" type="text" value="@Model.SearchString" placeholder="Search by Name" />
+    </div>
+    <div class="panel-group">
+        @*Categories*@
+        <div id="collapsibleBrands" class="panel panel-default collapsibleThingie">
+            <div class="panel-heading bigThingie">
+                <h4 class="panel-title">
+                    <a>Category</a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse">
+                <ul class="list-group smallThingies">
+                    @foreach (var categ in Model.Categories)
+                    {
+                        <li class="list-group-item">@categ.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        @*Brand*@
+        <div id="collapsibleCategs" class="panel panel-default collapsibleThingie">
+            <div class="panel-heading bigThingie">
+                <h4 class="panel-title">
+                    <a>Brand</a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse">
+                <ul class="list-group smallThingies">
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <li class="list-group-item">@brand.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/filtering")

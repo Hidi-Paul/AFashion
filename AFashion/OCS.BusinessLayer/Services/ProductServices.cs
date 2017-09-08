@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace OCS.BusinessLayer.Services
 {
-    public class ProductServices
+    public class ProductServices : IProductServices
     {
         private readonly IEntityRepository<Product> repository;
         private readonly IEntityRepository<Brand> brandRepository;

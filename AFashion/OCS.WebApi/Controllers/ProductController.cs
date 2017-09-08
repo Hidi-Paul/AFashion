@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace OCS.WebApi.Controllers
 {
+    [Authorize]
     [EnableCors("*", "*", "*")]
     public class ProductController : ApiController
     {
@@ -87,6 +88,11 @@ namespace OCS.WebApi.Controllers
             var model = new JavaScriptSerializer().Deserialize<FiltersModel>(urlParams);
 
             IEnumerable<ProductModel> products;
+            if(model.SearchString == null && model.Categories==null && model.Brands == null)
+            {
+                return GetAllProducts();
+            }
+
             products = this.productServices.FilteredSearch(model.SearchString, model.Categories, model.Brands);
 
             return this.Ok(products);

@@ -40,7 +40,7 @@ namespace OCS.DataAccess.Repositories
             var set = DbCon.Set<TEntity>();
             if (set != null)
             {
-                return set;
+                return set.ToList();
             }
             return new List<TEntity>();
         }

@@ -1,0 +1,22 @@
+﻿@model IEnumerable<OCS.MVC.Models.ProductViewModel>
+
+<div class="storeContent">
+    @foreach (var prod in Model)
+            {
+        <div class="col-md-3 prodCard">
+            <div class="prodContainer">
+
+                <div class="imgContainer">
+                    <img src="@prod.Image" />
+                </div>
+
+                <div class="prodContainer-body">
+                    <h4>@prod.Name</h4>
+                    <p class="prodBrand">@prod.Brand</p>
+                    <p class="prodPrice">@prod.Price$</p>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

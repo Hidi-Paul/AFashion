@@ -1,0 +1,14 @@
+﻿@model OCS.MVC.Models.ProductsPageViewModel
+
+@{
+    ViewBag.Title = "Shop Index";
+}
+<div class="storeContainer">
+    <div id="StoreFiltersBar">
+        @{ Html.RenderPartial("FiltersPartial", Model.FiltersViewModel);}
+    </div>
+
+    <div class="ProductGrid col-md-10">
+        @{ Html.RenderPartial("ProductListPartial", Model.Products);}
+    </div>
+</div>

@@ -7,6 +7,7 @@ using System.Web.Http.Cors;
 
 namespace OCS.WebApi.Controllers
 {
+    [Authorize]
     [EnableCors("*", "*", "*")]
     public class CategoryController : ApiController
     {

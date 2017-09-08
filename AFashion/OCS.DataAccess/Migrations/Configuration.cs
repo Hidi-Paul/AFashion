@@ -29,7 +29,7 @@ namespace OCS.DataAccess.Migrations
             defaultBrands.Add(new Brand { ID = new Guid("62d0c4fd-10f6-489f-9a94-420270cb442d"), Name = "Zara" });
             defaultBrands.Add(new Brand { ID = new Guid("a3dba29d-85c7-4c61-8f02-50bedb211e57"), Name = "Motivi" });
             defaultBrands.Add(new Brand { ID = new Guid("140acce4-e25c-4aa6-8d9d-ff611647450b"), Name = "Berska" });
-            defaultBrands.Add(new Brand { ID = new Guid("5e96688e-d646-4c30-8346-2e855d25caba"), Name = "H&M" });
+            defaultBrands.Add(new Brand { ID = new Guid("5e96688e-d646-4c30-8346-2e855d25caba"), Name = "HnM" });
 
 
             defaultProducts.Add(new Product { ID = new Guid("ae6484cb-15a9-45ce-8ef9-7915f7aeb045"), Brand = defaultBrands[1], Category = defaultCategs[0], Price = 100, Name = "Nice Hat", Image = "http://www.villagehatshop.com/photos/product/giant/4511390S162374/-/size-m.jpg" });
