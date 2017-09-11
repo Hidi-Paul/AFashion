@@ -1,16 +1,13 @@
 ﻿using Microsoft.Owin.Security;
 using Newtonsoft.Json;
-using OCS.MVC.Helpers;
 using OCS.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace OCS.MVC.Controllers
 {

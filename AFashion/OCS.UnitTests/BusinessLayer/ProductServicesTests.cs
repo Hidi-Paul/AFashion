@@ -129,7 +129,6 @@ namespace OCS.UnitTests.BusinessLogic
             ProductModel model = GetProductModel(dto);
 
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => AreEqual(prod, dto))));
-            productRepo.Setup(x => x.SaveChanges()).Returns(1);
             categRepo.Setup(x => x.GetByName(model.Category)).Returns(dto.Category);
             brandRepo.Setup(x => x.GetByName(model.Brand)).Returns(dto.Brand);
 
@@ -138,7 +137,6 @@ namespace OCS.UnitTests.BusinessLogic
 
             //Assert
             productRepo.Verify(x => x.AddOrUpdate(It.IsAny<Product>()), Times.Once);
-            productRepo.Verify(x => x.SaveChanges(), Times.Once);
         }
 
         [Test]
@@ -153,7 +151,6 @@ namespace OCS.UnitTests.BusinessLogic
 
             categRepo.Setup(x => x.GetByName(model.Category)).Returns(categ);
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => prod.Category.ID == categ.ID)));
-            productRepo.Setup(x => x.SaveChanges()).Returns(1);
 
             //Act
             service.AddProduct(model);
@@ -161,7 +158,6 @@ namespace OCS.UnitTests.BusinessLogic
             //Assert
             categRepo.Verify(x => x.GetByName(categ.Name), Times.Once);
             productRepo.Verify(x => x.AddOrUpdate(It.IsAny<Product>()), Times.Once);
-            productRepo.Verify(x => x.SaveChanges(), Times.Once);
         }
         [Test]
         public void AddProduct_IncludesBrandRelationships()
@@ -175,7 +171,6 @@ namespace OCS.UnitTests.BusinessLogic
 
             brandRepo.Setup(x => x.GetByName(model.Brand)).Returns(brand);
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => prod.Brand.ID == brand.ID)));
-            productRepo.Setup(x => x.SaveChanges()).Returns(1);
 
             //Act
             service.AddProduct(model);
@@ -183,7 +178,6 @@ namespace OCS.UnitTests.BusinessLogic
             //Assert
             brandRepo.Verify(x => x.GetByName(brand.Name), Times.Once);
             productRepo.Verify(x => x.AddOrUpdate(It.IsAny<Product>()), Times.Once);
-            productRepo.Verify(x => x.SaveChanges(), Times.Once);
         }
 
 

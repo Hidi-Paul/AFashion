@@ -1,5 +1,6 @@
 using Microsoft.Practices.Unity;
 using OCS.BusinessLayer.Services;
+using OCS.DataAccess.Context;
 using OCS.DataAccess.DTO;
 using OCS.DataAccess.Repositories;
 using System;
@@ -38,9 +39,9 @@ namespace OCS.WebApi.App_Start
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
 
-
+            container.RegisterType<IFashionContext,FashionContext>(new PerResolveLifetimeManager());
+            
             container.RegisterType<IEntityRepository<Category>, EntityRepository<Category>>();
             container.RegisterType<IEntityRepository<Brand>, EntityRepository<Brand>>();
             container.RegisterType<IEntityRepository<Product>, ProductRepository>();

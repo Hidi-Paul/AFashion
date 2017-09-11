@@ -2,15 +2,16 @@
 using OCS.DataAccess.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace OCS.DataAccess.Repositories
 {
     public class ProductRepository : IEntityRepository<Product>
     {
-        private readonly FashionContext DbCon = new FashionContext();
+        private readonly IFashionContext DbCon;
 
-        public ProductRepository(FashionContext dbCon)
+        public ProductRepository(IFashionContext dbCon)
         {
             this.DbCon = dbCon;
         }
@@ -23,10 +24,13 @@ namespace OCS.DataAccess.Repositories
             if (item != null)
             {
                 set.Attach(entity);
+                DbCon.Entry(entity).State = EntityState.Modified;
+                DbCon.SaveChanges();
             }
             else
             {
                 set.Add(entity);
+                DbCon.SaveChanges();
             }
             return entity;
         }
@@ -58,12 +62,6 @@ namespace OCS.DataAccess.Repositories
                           .Where(x => x.Name.Equals(name))
                           .FirstOrDefault();
             return item;
-        }
-
-        public int SaveChanges()
-        {
-            var changeCount = DbCon.SaveChanges();
-            return changeCount;
         }
     }
 }

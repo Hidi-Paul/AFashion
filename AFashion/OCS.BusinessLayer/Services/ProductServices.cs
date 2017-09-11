@@ -45,9 +45,7 @@ namespace OCS.BusinessLayer.Services
         public Guid AddProduct(ProductModel productModel)
         {
             Product product = Mapper.Map<Product>(productModel);
-
-            product.ID = Guid.NewGuid();
-
+            
             var brand = brandRepository.GetByName(productModel.Brand);
             if (brand != null)
             {
@@ -59,8 +57,21 @@ namespace OCS.BusinessLayer.Services
                 product.Category = categ;
             }
 
+            var prod = repository.GetByName(product.Name);
+            if (prod != null)
+            {
+                prod.Image = product.Image;
+                prod.Brand = brand;
+                prod.Category = categ;
+                prod.Price = product.Price;
+                product = prod;
+            }
+            else
+            {
+                product.ID = Guid.NewGuid();
+            }
+
             repository.AddOrUpdate(product);
-            repository.SaveChanges();
 
             return product.ID;
         }

@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace OCS.DataAccess.Context
 {
-    public class FashionContext : DbContext
+    public class FashionContext : DbContext, IFashionContext, IDbContext
     {
         public FashionContext() : base("name=AFashionDbCon")
         {

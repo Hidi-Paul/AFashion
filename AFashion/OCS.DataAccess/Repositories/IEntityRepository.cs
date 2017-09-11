@@ -10,6 +10,5 @@ namespace OCS.DataAccess.Repositories
         TEntity GetByName(string name);
         IEnumerable<TEntity> GetAll();
         TEntity AddOrUpdate(TEntity entity);
-        int SaveChanges();
     }
 }

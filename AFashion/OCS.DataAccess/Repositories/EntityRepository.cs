@@ -2,6 +2,7 @@
 using OCS.DataAccess.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace OCS.DataAccess.Repositories
@@ -9,9 +10,9 @@ namespace OCS.DataAccess.Repositories
 
     public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, IEntity
     {
-        private readonly FashionContext DbCon = new FashionContext();
+        private readonly IFashionContext DbCon;
 
-        public EntityRepository(FashionContext dbCon)
+        public EntityRepository(IFashionContext dbCon)
         {
             this.DbCon = dbCon;
         }
@@ -25,16 +26,19 @@ namespace OCS.DataAccess.Repositories
                 if (set.Contains(entity))
                 {
                     result = set.Attach(entity);
+                    DbCon.Entry(entity).State = EntityState.Modified;
+                    DbCon.SaveChanges();
                 }
                 else
                 {
                     result = set.Add(entity);
+                    DbCon.SaveChanges();
                 }
                 return result;
             }
             return null;
         }
-        
+
         public IEnumerable<TEntity> GetAll()
         {
             var set = DbCon.Set<TEntity>();
@@ -63,11 +67,6 @@ namespace OCS.DataAccess.Repositories
                 return set.Where(item => item.Name.ToUpper().Equals(name.ToUpper())).FirstOrDefault();
             }
             return null;
-        }
-
-        public int SaveChanges()
-        {
-            return DbCon.SaveChanges();
         }
     }
 }

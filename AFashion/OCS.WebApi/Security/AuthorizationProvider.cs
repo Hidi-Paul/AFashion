@@ -67,7 +67,13 @@ namespace OCS.WebApi.Security
 
             identity.AddClaim(new Claim("Sid", user.Id.ToString()));
             identity.AddClaim(new Claim("Name", context.UserName));
-            
+
+            var claims = userManager.GetClaimsAsync(user.Id);
+            foreach (Claim claim in claims.Result)
+            {
+                identity.AddClaim(claim);
+            }
+
             context.Validated(identity);
         }
 

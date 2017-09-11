@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\FashionContext.cs" />
+    <Compile Include="Context\IDbContext.cs" />
+    <Compile Include="Context\IFashionContext.cs" />
     <Compile Include="DTO\Brand.cs" />
     <Compile Include="DTO\Category.cs" />
     <Compile Include="DTO\IEntity.cs" />

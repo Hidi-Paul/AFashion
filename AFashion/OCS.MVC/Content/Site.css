@@ -37,3 +37,22 @@ textarea {
     padding-left: 7px;
     padding-right: 7px;
 }
+
+.fashion-form{
+
+}
+.fashion-form h2{
+    text-align:center
+}
+.fashion-form h3{
+    text-align:center;
+}
+.fashion-form p{
+    text-align:center;
+}
+
+.fashion-form-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,5 +1,6 @@
 ﻿using OCS.BusinessLayer.Models;
 using OCS.BusinessLayer.Services;
+using OCS.WebApi.Attributes;
 using OCS.WebApi.Models;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,7 @@ namespace OCS.WebApi.Controllers
         }
 
         [HttpPost]
+        [AuthorizeClaim("Role","Admin")]
         [Route("PostProduct")]
         public IHttpActionResult PostProduct([FromBody] ProductModel product)
         {
