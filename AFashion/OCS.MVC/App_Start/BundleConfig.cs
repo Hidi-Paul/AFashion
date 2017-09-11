@@ -27,6 +27,7 @@ namespace OCS.MVC.App_Start
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css",
+                      "~/Content/Account.css",
                       "~/Content/FilterStyle.css",
                       "~/Content/ProductStyle.css"));
 

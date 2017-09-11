@@ -1,13 +1,13 @@
 ﻿@model OCS.MVC.Models.FiltersViewModel
 
-<div class="col-md-2 storeLeftBar">
-    @*Search Bar*@
-    <div class="searchContainer">
-        <input id="searchBar" class="form-control mr-sm-2" type="text" value="@Model.SearchString" placeholder="Search by Name" />
-    </div>
+<div class="col-md-2 side-bar">
     <div class="panel-group">
+        @*Search Bar*@
+        <div class="searchContainer panel panel-default filter-bar-item">
+            <input id="searchBar" class="form-control mr-sm-2 fill" type="text" value="@Model.SearchString" placeholder="Search by Name" />
+        </div>
         @*Categories*@
-        <div id="collapsibleBrands" class="panel panel-default collapsibleThingie">
+        <div id="collapsibleBrands" class="panel panel-default filter-bar-item collapsibleThingie">
             <div class="panel-heading bigThingie">
                 <h4 class="panel-title">
                     <a>Category</a>
@@ -23,7 +23,7 @@
             </div>
         </div>
         @*Brand*@
-        <div id="collapsibleCategs" class="panel panel-default collapsibleThingie">
+        <div id="collapsibleCategs" class="panel panel-default filter-bar-item collapsibleThingie">
             <div class="panel-heading bigThingie">
                 <h4 class="panel-title">
                     <a>Brand</a>

@@ -1,0 +1,34 @@
+﻿/*Login Partial*/
+.login-form {
+}
+    .login-form h2 {
+        text-align: center;
+    }
+    .login-form p {
+        text-align:center;
+    }
+
+.checkbox {
+    text-align:center;
+}
+.rememberMe-checkbox {
+    margin-left:0px!important;
+}
+.login-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Register Partial*/
+.register-form {
+}
+.register-form h4{
+    text-align:center;
+}
+
+.register-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -20,11 +20,12 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+
 }
 
-
-
+.navbar-header {
+    margin-left: 5px!important;
+}
 /* Fancy Hats*/
 .storeContainer {
     margin: 0;

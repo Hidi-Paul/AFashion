@@ -1,10 +1,22 @@
 ﻿/* Fancy Left Bar */
 
-.storeLeftBar {
+.side-bar {
     min-height: 50px;
     padding: 5px;
+    padding-top: 10px;
 }
 
+.filter-bar-item {
+    position:relative;
+    min-height:37px;
+}
+
+.fill {
+    position:absolute;
+    top:0;
+    bottom:0;
+    height:auto;
+}
 
 .bigThingie {
     cursor: pointer;

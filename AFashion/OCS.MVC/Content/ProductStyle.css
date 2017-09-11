@@ -2,7 +2,6 @@
 .prodCard {
     padding: 3px;
 }
-
     .prodCard:hover {
         background-color: whitesmoke
     }
@@ -13,7 +12,12 @@
 
 .imgContainer {
     height: 300px;
+    min-width:150px;
 }
+    .imgContainer img {
+        display: block;
+        margin: 0 auto;
+    }
 
 .prodContainer img {
     height: 100%;
