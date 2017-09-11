@@ -6,10 +6,10 @@
 
 <div class="row fashion-form">
     <div class="col-md-6 col-md-offset-3">
+        <h3>Create Product</h3>
         @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            <h3>Create Product</h3>
             <hr />
 
             <div class="form-group">
