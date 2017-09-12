@@ -3,11 +3,14 @@ using OCS.MVC.Helpers;
 using OCS.MVC.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace OCS.MVC.Controllers
 {
@@ -39,9 +42,11 @@ namespace OCS.MVC.Controllers
 
         // POST: Product Filters
         [HttpPost]
-        public async Task<ActionResult> ProductListPartial(FiltersViewModel model)
+        public async Task<ActionResult> ProductListPartial(string filters)
         {
-            var products = await GetFilteredProducts(model);
+            filters = HttpUtility.HtmlDecode(filters);
+            filters = HttpUtility.UrlEncode(filters);
+            var products = await GetFilteredProducts(filters);
 
             return PartialView("ProductListPartial", products);
         }
@@ -130,11 +135,9 @@ namespace OCS.MVC.Controllers
             }
             return brands;
         }
-        private async Task<IEnumerable<ProductViewModel>> GetFilteredProducts(FiltersViewModel model)
+        private async Task<IEnumerable<ProductViewModel>> GetFilteredProducts(string model)
         {
-            var param = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var paramValue = param.ReadAsStringAsync().Result;
-            HttpResponseMessage response = await HttpRequestHelper.GetAsync("Filter", paramValue);
+            HttpResponseMessage response = await HttpRequestHelper.GetAsync("Filter", model);
 
             List<ProductViewModel> products = new List<ProductViewModel>();
             if (response.IsSuccessStatusCode)

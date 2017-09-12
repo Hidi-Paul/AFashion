@@ -4,6 +4,7 @@ using OCS.WebApi.Attributes;
 using OCS.WebApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
@@ -81,13 +82,15 @@ namespace OCS.WebApi.Controllers
 
         [HttpGet]
         [Route("Filter")]
-        public IHttpActionResult GetFiltered([FromUri]string urlParams)
+        public IHttpActionResult GetFiltered(string urlParams)
         {
             if (urlParams==null||urlParams.Length==0)
             {
                 return BadRequest("Invalid data.");
             }
-            var model = new JavaScriptSerializer().Deserialize<FiltersModel>(urlParams);
+
+            var decodedParams = HttpUtility.UrlDecode(urlParams);
+            var model = new JavaScriptSerializer().Deserialize<FiltersModel>(decodedParams);
 
             IEnumerable<ProductModel> products;
             if(model.SearchString == null && model.Categories==null && model.Brands == null)

@@ -189,6 +189,7 @@
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\CreateProductViewModel.cs" />
     <Compile Include="Models\FiltersViewModel.cs" />
+    <Compile Include="Models\ForgotViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ProductsPageViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />

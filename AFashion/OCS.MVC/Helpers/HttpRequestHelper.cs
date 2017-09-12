@@ -29,16 +29,25 @@ namespace OCS.MVC.Helpers
 
             return HttpClient;
         }
+        public static async Task<HttpResponseMessage> GetAsync(string url, Object data)
+        {
+            var param = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            var paramValue = param.ReadAsStringAsync().Result;
+            
+            return await GetAsync(url, paramValue);
+        }
 
-        public static async Task<HttpResponseMessage> GetAsync(string url="", string urlParam = "")
+        public static async Task<HttpResponseMessage> GetAsync(string url, string urlParams = "")
         {
             HttpResponseMessage response;
+
+            urlParams = HttpUtility.UrlEncode(urlParams);
 
             using (HttpClient client = GetClient())
             {
 
-                response = (urlParam.Length > 0) ? await client.GetAsync($"{ServerAddr}{url}?urlParams={urlParam}") :
-                                                   await client.GetAsync($"{ServerAddr}{url}");
+                response = (urlParams.Length > 0) ? await client.GetAsync($"{ServerAddr}{url}?urlParams={urlParams}") :
+                                                    await client.GetAsync($"{ServerAddr}{url}");
             }
             return response;
         }

@@ -44,6 +44,7 @@ function initFilters() {
         options[i].addEventListener("click", FilterToggle);
     }
 };
+//Clicking on a filter
 function FilterToggle(evt) {
     var filterObj = evt.target;
     if (filterObj.isTriggered) {
@@ -55,6 +56,7 @@ function FilterToggle(evt) {
     }
     RefreshProducts();
 };
+//Gather filtering data
 function RefreshProducts() {
     var BrandFilters = [];
     var CategoryFilters = [];
@@ -96,7 +98,7 @@ function FilterProducts(searchText, categories, brands) {
     obj = JSON.stringify(obj);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', Globals.ServerAddr + 'Product/ProductListPartial');
+    xhr.open('POST', Globals.ServerAddr + 'Product/ProductListPartial/?filters='+encodeURIComponent(obj));
 
     xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
@@ -111,7 +113,7 @@ function FilterProducts(searchText, categories, brands) {
             alert('Filter Products Request failed.  Returned status of ' + xhr.status);
         }
     };
-    xhr.send(obj);
+    xhr.send();
 }
 
 //This one initializes everything related to the filters
