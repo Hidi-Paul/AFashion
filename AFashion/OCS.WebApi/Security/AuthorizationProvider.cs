@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using Microsoft.AspNet.Identity.Owin;
-using OCS.WebApi.SecurityModels;
-using System;
-using System.Security.Claims;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace OCS.WebApi.Security
 {
@@ -57,40 +56,32 @@ namespace OCS.WebApi.Security
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
             
             var user = await userManager.FindAsync(context.UserName, context.Password);
+            
             if (user == null)
             {
                 context.SetError("invalid_grant", "Username or password incorrect");
                 return;
             }
-
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-
-            identity.AddClaim(new Claim("Sid", user.Id.ToString()));
-            identity.AddClaim(new Claim("Name", context.UserName));
-
+            var identity = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
+            AuthenticationProperties props = new AuthenticationProperties(new Dictionary<string, string>()
+            {
+                { "Sid", user.Id.ToString() },
+                { "Name", user.UserName }
+            });
+            
             var claims = userManager.GetClaimsAsync(user.Id);
             foreach (Claim claim in claims.Result)
             {
                 identity.AddClaim(claim);
             }
 
-            context.Validated(identity);
+            var ticket = new AuthenticationTicket(identity,props);
+
+            context.Validated(ticket);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            var claims = userManager.GetClaimsAsync(Guid.Parse(context.Identity.FindFirst(x=>x.Type.Equals("Sid")).Value));
-            foreach (Claim claim in claims.Result)
-            {
-                context.AdditionalResponseParameters.Add(claim.Type, claim.Value);
-            }
-            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
-            {
-                context.AdditionalResponseParameters.Add(property.Key, property.Value);
-            }
-
             return Task.FromResult<object>(null);
         }
     }

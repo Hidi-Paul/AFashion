@@ -13,8 +13,8 @@ namespace OCS.MVC
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                CookieName = "ApplicationCookie",
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                CookieName="ApplicationCookie",
                 LoginPath = new PathString("/Account/Login")
             });
 

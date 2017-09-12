@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using OCS.MVC.Models;
 using System;
@@ -104,7 +105,6 @@ namespace OCS.MVC.Controllers
                 ExpiresUtc = DateTime.Now.AddSeconds(token.ExpiresIn)
             };
 
-
             var claims = new List<Claim>(){
                 new Claim(ClaimTypes.Name, userName),
                 new Claim("AccessToken", token.AccessToken),
@@ -114,8 +114,7 @@ namespace OCS.MVC.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, token.Role));
             }
 
-
-            var identity = new ClaimsIdentity(claims.ToArray(), "ApplicationCookie");
+            var identity = new ClaimsIdentity(claims.ToArray(),DefaultAuthenticationTypes.ApplicationCookie);
 
             Request.GetOwinContext().Authentication.SignIn(authOptions, identity);
 
