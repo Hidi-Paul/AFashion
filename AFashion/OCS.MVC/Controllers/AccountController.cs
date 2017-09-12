@@ -116,6 +116,7 @@ namespace OCS.MVC.Controllers
 
             var identity = new ClaimsIdentity(claims.ToArray(),DefaultAuthenticationTypes.ApplicationCookie);
 
+            
             Request.GetOwinContext().Authentication.SignIn(authOptions, identity);
 
             return true;

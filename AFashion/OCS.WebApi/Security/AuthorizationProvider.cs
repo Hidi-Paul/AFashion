@@ -54,7 +54,6 @@ namespace OCS.WebApi.Security
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-            
             var user = await userManager.FindAsync(context.UserName, context.Password);
             
             if (user == null)
@@ -82,6 +81,7 @@ namespace OCS.WebApi.Security
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
+
             return Task.FromResult<object>(null);
         }
     }
