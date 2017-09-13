@@ -148,7 +148,7 @@ namespace OCS.MVC.Controllers
             {
                 new KeyValuePair<string, string>( "Email", email ),
                 new KeyValuePair<string, string>( "Password", password ),
-                new KeyValuePair<string, string> ( "ConfirmPassword", confirmPassword )
+                new KeyValuePair<string, string>( "ConfirmPassword", confirmPassword )
             };
             var content = new FormUrlEncodedContent(pairs);
             using (var client = new HttpClient())
