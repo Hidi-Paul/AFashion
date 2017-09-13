@@ -68,19 +68,18 @@ namespace OCS.WebApi.Security
                 { "Name", user.UserName }
             });
             
-            var claims = userManager.GetClaimsAsync(user.Id);
-            foreach (Claim claim in claims.Result)
-            {
-                identity.AddClaim(claim);
-            }
-
             var ticket = new AuthenticationTicket(identity,props);
-
             context.Validated(ticket);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
+            var user = context.Identity;
+
+            foreach(Claim claim in user.Claims)
+            {
+                context.AdditionalResponseParameters.Add(claim.Type, claim.Value);
+            }
 
             return Task.FromResult<object>(null);
         }

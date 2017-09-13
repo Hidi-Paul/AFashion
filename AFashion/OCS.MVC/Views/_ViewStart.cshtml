@@ -1,3 +1,9 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<script>
+        var Globals = {
+            ServerAddr:'@System.Configuration.ConfigurationManager.AppSettings["mvc-url"]'
+        }
+</script>
