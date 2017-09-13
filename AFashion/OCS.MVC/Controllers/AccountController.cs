@@ -84,6 +84,7 @@ namespace OCS.MVC.Controllers
         #region Helpers
         private bool SignIn(string userName, string password, bool isPersistent = false)
         {
+            //Token Request
             var response = GetToken(ServerAddr, userName, password);
             if (response == null)
             {
@@ -98,15 +99,10 @@ namespace OCS.MVC.Controllers
                 return false;
             }
 
-            AuthenticationProperties authOptions = new AuthenticationProperties()
-            {
-                AllowRefresh = true,
-                IsPersistent = isPersistent,
-                ExpiresUtc = DateTime.Now.AddSeconds(token.ExpiresIn)
-            };
 
+            //Identity config
             var claims = new List<Claim>(){
-                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Name, token.Username),
                 new Claim("AccessToken", token.AccessToken),
             };
             if (token.Role != null)
@@ -116,9 +112,15 @@ namespace OCS.MVC.Controllers
 
             var identity = new ClaimsIdentity(claims.ToArray(),DefaultAuthenticationTypes.ApplicationCookie);
 
-            
-            Request.GetOwinContext().Authentication.SignIn(authOptions, identity);
+            //Authorization
+            AuthenticationProperties authOptions = new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                IsPersistent = isPersistent,
+                ExpiresUtc = DateTime.Now.AddSeconds(token.ExpiresIn)
+            };
 
+            Request.GetOwinContext().Authentication.SignIn(authOptions, identity);
             return true;
         }
         private void SignOut()

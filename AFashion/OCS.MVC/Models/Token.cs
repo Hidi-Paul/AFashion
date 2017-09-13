@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace OCS.MVC.Models
 {
     public class Token
     {
+        [JsonProperty("Username")]
+        public string Username { get; set; }
         [JsonProperty("Role")]
         public string Role { get; set; }
         [JsonProperty("access_token")]

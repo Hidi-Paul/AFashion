@@ -76,6 +76,7 @@ namespace OCS.WebApi.Security
         {
             var user = context.Identity;
 
+            context.AdditionalResponseParameters.Add("Username", user.Name);
             foreach(Claim claim in user.Claims)
             {
                 context.AdditionalResponseParameters.Add(claim.Type, claim.Value);
