@@ -13,6 +13,7 @@ namespace OCS.MVC
         public void Configuration(IAppBuilder app)
         {
             AreaRegistration.RegisterAllAreas();
+
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 

@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace OCS.MVC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private static string ServerAddr => ConfigurationManager.AppSettings["base-url"];
 
@@ -49,6 +49,7 @@ namespace OCS.MVC.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var SessionId = GetUniqueKey();
             return View();
         }
 
@@ -57,6 +58,8 @@ namespace OCS.MVC.Controllers
         [Route("PostProduct")]
         public ActionResult Register(RegisterViewModel model)
         {
+
+            var SessionId = GetUniqueKey();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -77,6 +80,7 @@ namespace OCS.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var SessionId = GetUniqueKey();
             SignOut();
             return RedirectToAction("Login", "Account");
         }
@@ -113,13 +117,13 @@ namespace OCS.MVC.Controllers
             var identity = new ClaimsIdentity(claims.ToArray(),DefaultAuthenticationTypes.ApplicationCookie);
 
             //Authorization
+
             AuthenticationProperties authOptions = new AuthenticationProperties()
             {
                 AllowRefresh = true,
                 IsPersistent = isPersistent,
                 ExpiresUtc = DateTime.Now.AddSeconds(token.ExpiresIn)
             };
-
             Request.GetOwinContext().Authentication.SignIn(authOptions, identity);
             return true;
         }
