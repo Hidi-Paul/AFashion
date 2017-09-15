@@ -18,10 +18,7 @@
             </div>
             <div class="navbar-header">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li>@Html.ActionLink("Add Product", "AddProduct", "Product")</li>
-                    }
+                    <li>@Html.ActionLink("Add Product", "AddProduct", "Product")</li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse">
@@ -36,6 +33,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/helpers")
     @RenderSection("scripts", required: false)
 </body>
 </html>

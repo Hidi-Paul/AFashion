@@ -1,5 +1,12 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <script>
@@ -7,3 +14,7 @@
             ServerAddr:'@System.Configuration.ConfigurationManager.AppSettings["mvc-url"]'
         }
 </script>
+
+
+
+@Scripts.Render("~/bundles/helpers")

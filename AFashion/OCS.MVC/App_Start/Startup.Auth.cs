@@ -15,6 +15,7 @@ namespace OCS.MVC
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                CookieName=".MultiTennantUser-",
                 CookieManager = new MultiTennantCookieManager(),
                 LoginPath = new PathString("/Account/Login")
             });

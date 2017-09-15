@@ -22,9 +22,9 @@ namespace OCS.MVC
             {
                 return null;
             }
-            if (!routeData.Values.ContainsKey("guid") || routeData.Values["guid"].ToString().Length == 0)
+            if (routeData.Values.ContainsKey("guid") && routeData.Values["guid"].ToString().Length == 0)
             {
-                routeData.Values["guid"] = Guid.NewGuid().ToString();
+                return null;
             }
             return routeData;
         }
@@ -40,14 +40,21 @@ namespace OCS.MVC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            RouteTable.Routes.Add("UniqueRoute",
-                new UniqueRoute("g-{guid}/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", guid = "", id = UrlParameter.Optional }));
 
-            RouteTable.Routes.Add("Default",
-                new UniqueRoute("{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", guid = "", id = UrlParameter.Optional }));
+            routes.MapRoute(
+               name: "TenantRoute",
+               url: "g-{tenant}/{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
 
+            routes.MapRoute(
+                 name: "GuestRoute",
+                 url: "{controller}/{action}/{id}",
+                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+
+            routes.MapRoute(
+                 name: "Default",
+                 url: "g-{tenant}/{controller}/{action}/{id}",
+                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional, tenant="" });
         }
     }
 }

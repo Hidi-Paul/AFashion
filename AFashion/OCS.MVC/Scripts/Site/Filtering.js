@@ -97,13 +97,8 @@ function FilterProducts(searchText, categories, brands) {
 
     obj = JSON.stringify(obj);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', Globals.ServerAddr + 'Product/ProductListPartial/?filters='+encodeURIComponent(obj));
-
-    xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-
+    var xhr = GetXmlHttpRequest('POST', 'Product/ProductListPartial/?filters=' + encodeURIComponent(obj))
+    alert(xhr);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var ProductGrid = document.getElementsByClassName("ProductGrid")[0];

@@ -17,7 +17,6 @@ namespace OCS.MVC.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var SessionId = GetUniqueKey();
             IEnumerable<ProductViewModel> products = await GetProducts();
             IEnumerable<CategoryViewModel> categories = await GetCategories();
             IEnumerable<BrandViewModel> brands = await GetBrands();
@@ -41,7 +40,6 @@ namespace OCS.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> ProductListPartial(string filters)
         {
-            var SessionId = GetUniqueKey();
             filters = HttpUtility.HtmlDecode(filters);
             filters = HttpUtility.UrlEncode(filters);
             var products = await GetFilteredProducts(filters);
@@ -53,7 +51,6 @@ namespace OCS.MVC.Controllers
         [HttpGet]
         public async Task<ActionResult> AddProduct()
         {
-            var SessionId = GetUniqueKey();
             var brands = await GetBrands();
             var categs = await GetCategories();
 
@@ -72,7 +69,6 @@ namespace OCS.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> AddProduct(CreateProductViewModel model)
         {
-            var SessionId = GetUniqueKey();
             if (!ModelState.IsValid)
             {
                 var brands = await GetBrands();

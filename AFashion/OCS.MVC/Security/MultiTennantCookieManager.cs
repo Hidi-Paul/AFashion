@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Microsoft.Owin.Infrastructure;
+using System;
 using System.Text.RegularExpressions;
 
 namespace OCS.MVC.Security
@@ -30,12 +31,9 @@ namespace OCS.MVC.Security
 
         public new void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
         {
-            var sessionId = GetSessionID(context);
-
-            if (sessionId != string.Empty)
-            {
-                key = key + sessionId;
-            }
+            var sessionId = "" + context.Request.Get<string>("userSessionGuid");
+            
+            key = key + sessionId;
 
             base.AppendResponseCookie(context, key, value, options);
         }
@@ -74,5 +72,33 @@ namespace OCS.MVC.Security
         }
 
         #endregion Helpers
+    }
+
+
+    public class NewCookieManager : ChunkingCookieManager, ICookieManager
+    {
+        public NewCookieManager() : base()
+        {
+
+        }
+
+
+        public new void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
+        {
+
+            base.AppendResponseCookie(context, key, value, options);
+        }
+
+        public new void DeleteCookie(IOwinContext context, string key, CookieOptions options)
+        {
+            base.DeleteCookie(context, key, options);
+        }
+
+        public new string GetRequestCookie(IOwinContext context, string key)
+        {
+            var cookie = base.GetRequestCookie(context, key);
+            return cookie;
+        }
+        
     }
 }

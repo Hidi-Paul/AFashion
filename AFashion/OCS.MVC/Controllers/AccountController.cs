@@ -42,14 +42,19 @@ namespace OCS.MVC.Controllers
                 return View(model);
             }
 
-            return RedirectToLocal(returnUrl);
+
+            Guid userSessionId = Guid.NewGuid();
+            string userRouteData = "g-" + userSessionId.ToString();
+            var context = this.HttpContext.GetOwinContext().Request.Set<string>("userSessionGuid", userRouteData);
+
+            var redirectUrl = "/" + userRouteData + returnUrl;
+            return Redirect(redirectUrl);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var SessionId = GetUniqueKey();
             return View();
         }
 
@@ -58,8 +63,6 @@ namespace OCS.MVC.Controllers
         [Route("PostProduct")]
         public ActionResult Register(RegisterViewModel model)
         {
-
-            var SessionId = GetUniqueKey();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -80,7 +83,6 @@ namespace OCS.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            var SessionId = GetUniqueKey();
             SignOut();
             return RedirectToAction("Login", "Account");
         }
@@ -113,9 +115,10 @@ namespace OCS.MVC.Controllers
             {
                 claims.Add(new Claim(ClaimTypes.Role, token.Role));
             }
+            
 
-            var identity = new ClaimsIdentity(claims.ToArray(),DefaultAuthenticationTypes.ApplicationCookie);
-
+            var identity = new ClaimsIdentity(claims.ToArray(), DefaultAuthenticationTypes.ApplicationCookie);
+            
             //Authorization
 
             AuthenticationProperties authOptions = new AuthenticationProperties()
