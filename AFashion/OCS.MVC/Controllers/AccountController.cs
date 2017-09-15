@@ -45,7 +45,7 @@ namespace OCS.MVC.Controllers
 
             Guid userSessionId = Guid.NewGuid();
             string userRouteData = "g-" + userSessionId.ToString();
-            var context = this.HttpContext.GetOwinContext().Request.Set<string>("userSessionGuid", userRouteData);
+            var context = HttpContext.GetOwinContext().Request.Set<string>("userSessionGuid", userRouteData);
 
             var redirectUrl = "/" + userRouteData + returnUrl;
             return Redirect(redirectUrl);
@@ -84,7 +84,7 @@ namespace OCS.MVC.Controllers
         public ActionResult LogOff()
         {
             SignOut();
-            return RedirectToAction("Login", "Account");
+            return Redirect("/Account/Login");
         }
 
         #region Helpers
@@ -132,7 +132,11 @@ namespace OCS.MVC.Controllers
         }
         private void SignOut()
         {
-            Request.GetOwinContext().Authentication.SignOut("ApplicationCookie");
+            //string //id = "g-"+Session["tenant"];
+
+
+
+            Request.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
         private static HttpResponseMessage GetToken(string url, string userName, string password)
