@@ -41,7 +41,7 @@ namespace OCS.MVC
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             RouteTable.Routes.Add("UniqueRoute",
-                new UniqueRoute("g/{guid}/{controller}/{action}/{id}",
+                new UniqueRoute("g-{guid}/{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", guid = "", id = UrlParameter.Optional }));
 
             RouteTable.Routes.Add("Default",
