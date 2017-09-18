@@ -98,7 +98,7 @@ function FilterProducts(searchText, categories, brands) {
     obj = JSON.stringify(obj);
 
     var xhr = GetXmlHttpRequest('POST', 'Product/ProductListPartial/?filters=' + encodeURIComponent(obj))
-    alert(xhr);
+
     xhr.onload = function () {
         if (xhr.status === 200) {
             var ProductGrid = document.getElementsByClassName("ProductGrid")[0];

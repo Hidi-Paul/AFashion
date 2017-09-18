@@ -45,10 +45,24 @@ namespace OCS.MVC.Controllers
 
             Guid userSessionId = Guid.NewGuid();
             string userRouteData = "g-" + userSessionId.ToString();
+
+            //Add To Request to we can access it in the MultiTennantCookieManager
             var context = HttpContext.GetOwinContext().Request.Set<string>("userSessionGuid", userRouteData);
 
-            var redirectUrl = "/" + userRouteData + returnUrl;
-            return Redirect(redirectUrl);
+            //For the weird cases where /some/ SessionID is in the url before login
+            //We remove it so it doesn't get dupplicated
+            int a = returnUrl.IndexOf("/g-");
+            if (a != -1)
+            {
+                int b = returnUrl.Substring(a + 1).IndexOf("/");
+
+                var prefix = returnUrl.Substring(0, a);
+                var suffix = returnUrl.Substring(b + 1, returnUrl.Length - b - 1);
+                returnUrl = prefix + suffix;
+                returnUrl = "/" + userRouteData + returnUrl;
+            }
+
+            return Redirect(returnUrl);
         }
 
         [HttpGet]
@@ -132,10 +146,6 @@ namespace OCS.MVC.Controllers
         }
         private void SignOut()
         {
-            //string //id = "g-"+Session["tenant"];
-
-
-
             Request.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
