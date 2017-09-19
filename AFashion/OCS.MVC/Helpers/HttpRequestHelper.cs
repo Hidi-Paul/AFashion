@@ -37,16 +37,16 @@ namespace OCS.MVC.Helpers
             return await GetAsync(url, paramValue);
         }
 
-        public static async Task<HttpResponseMessage> GetAsync(string url, string urlParams = "")
+        public static async Task<HttpResponseMessage> GetAsync(string url, string urlParam = "")
         {
             HttpResponseMessage response;
 
-            urlParams = HttpUtility.UrlEncode(urlParams);
+            urlParam = HttpUtility.UrlEncode(urlParam);
 
             using (HttpClient client = GetClient())
             {
 
-                response = (urlParams.Length > 0) ? await client.GetAsync($"{ServerAddr}{url}?urlParams={urlParams}") :
+                response = (urlParam.Length > 0) ? await client.GetAsync($"{ServerAddr}{url}?urlParam={urlParam}") :
                                                     await client.GetAsync($"{ServerAddr}{url}");
             }
             return response;

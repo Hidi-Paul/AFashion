@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -51,6 +49,16 @@ namespace OCS.MVC.Controllers
             var products = await GetFilteredProducts(filters);
 
             return PartialView("ProductListPartial", products);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSearchSuggestions(string search)
+        {
+            search = HttpUtility.HtmlDecode(search);
+            
+            IEnumerable<string> suggestions=await GetSuggestions(search);
+            
+            return Json(suggestions, JsonRequestBehavior.AllowGet);
         }
 
         // GET: New Product Creation Form
@@ -122,6 +130,20 @@ namespace OCS.MVC.Controllers
                 throw new ApplicationException(response.Content.ToString());
             }
             return categories;
+        }
+        private async Task<IEnumerable<string>> GetSuggestions(string search)
+        {
+            HttpResponseMessage response = await HttpRequestHelper.GetAsync("GetSuggestions", search);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                IEnumerable<string> results = await response.Content.ReadAsAsync<IEnumerable<string>>();
+                return results;
+            }
+            else
+            {
+                return null;
+            }
         }
         private async Task<IEnumerable<BrandViewModel>> GetBrands()
         {

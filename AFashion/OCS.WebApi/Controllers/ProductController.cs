@@ -38,6 +38,18 @@ namespace OCS.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("GetSuggestions")]
+        public IHttpActionResult GetSuggestions(string urlParam)
+        {
+            if (urlParam != null && urlParam.Length>0)
+            {
+                IEnumerable<string> suggestions = productServices.GetSuggestions(urlParam);
+                return this.Ok(suggestions);
+            }
+            return this.BadRequest("Please specify search criteria.");
+        }
+
+        [HttpGet]
         [Route("GetProductByID")]
         public IHttpActionResult GetProductById(Guid? id)
         {
@@ -82,14 +94,14 @@ namespace OCS.WebApi.Controllers
 
         [HttpGet]
         [Route("Filter")]
-        public IHttpActionResult GetFiltered(string urlParams)
+        public IHttpActionResult GetFiltered(string urlParam)
         {
-            if (urlParams==null||urlParams.Length==0)
+            if (urlParam==null||urlParam.Length==0)
             {
                 return BadRequest("Invalid data.");
             }
 
-            var decodedParams = HttpUtility.UrlDecode(urlParams);
+            var decodedParams = HttpUtility.UrlDecode(urlParam);
             var model = new JavaScriptSerializer().Deserialize<FiltersModel>(decodedParams);
 
             IEnumerable<ProductModel> products;

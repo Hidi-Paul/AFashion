@@ -15,8 +15,11 @@
     position:absolute;
     top:0;
     bottom:0;
-    height:auto;
+    right:0;
+    height:37px;
+    width:100%;
 }
+
 
 .bigThingie {
     cursor: pointer;

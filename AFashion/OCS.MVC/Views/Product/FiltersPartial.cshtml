@@ -1,10 +1,20 @@
 ﻿@model OCS.MVC.Models.FiltersViewModel
 
+
 <div class="col-md-2 side-bar">
+    <link href="~/Content/Awesomplete/awesomplete.css" rel="stylesheet" />
+    <script src="~/Scripts/Awesomplete/awesomplete.js" async></script>
     <div class="panel-group">
         @*Search Bar*@
         <div class="searchContainer panel panel-default filter-bar-item">
-            <input id="searchBar" class="form-control mr-sm-2 fill" type="text" value="@Model.SearchString" placeholder="Search by Name" />
+            <input id="searchBar" 
+                   class="awesomplete fill" 
+                   type="text" 
+                   placeholder="Search by Name"
+                   value="@Model.SearchString" 
+                   list="mylist"/> 
+            <datalist id="mylist">
+            </datalist>
         </div>
         @*Categories*@
         <div id="collapsibleBrands" class="panel panel-default filter-bar-item collapsibleThingie">

@@ -8,6 +8,8 @@ namespace OCS.BusinessLayer.Services
     {
         IEnumerable<ProductModel> GetAll();
 
+        IEnumerable<string> GetSuggestions(string search);
+
         ProductModel GetByID(Guid id);
 
         ProductModel AddProduct(CreateProductModel productModel);

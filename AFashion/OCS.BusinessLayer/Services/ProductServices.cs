@@ -38,6 +38,16 @@ namespace OCS.BusinessLayer.Services
             return mappedProducts;
         }
 
+        public IEnumerable<string> GetSuggestions(string search)
+        {
+            IEnumerable<string> suggestions = repository.GetAll()
+                                                        .Where(x=>x.Name.ToUpper().Contains(search.ToUpper()))
+                                                        .Select(f => f.Name)
+                                                        .ToList();
+
+            return suggestions;
+        }
+
         public ProductModel GetByID(Guid id)
         {
             Product product = repository.GetByID(id);

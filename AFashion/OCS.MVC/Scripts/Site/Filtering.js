@@ -1,10 +1,12 @@
 ﻿var searchBar = document.getElementById("searchBar");
+var mylist = document.getElementById("mylist")
+
 var brandCollapseBtn = document.getElementById("collapsibleBrands");
 var categCollapseBtn = document.getElementById("collapsibleCategs");
 
 
 
-//Make Brands button collapse options
+//Brand Filters Collapse
 function initBrandFilterBtn() {
     var trigger = brandCollapseBtn.querySelectorAll(".bigThingie")[0];
     var brandCollapsibles = brandCollapseBtn.querySelectorAll(".collapse")[0];
@@ -13,7 +15,7 @@ function initBrandFilterBtn() {
         $(brandCollapsibles).collapse("toggle"); /*imi recunosc pacatele*/
     });
 };
-//Make Categories button collapse options
+//Category Filter Collapse
 function initCategFilterBtn() {
     var trigger = categCollapseBtn.querySelectorAll(".bigThingie")[0];
     var categCollapsibles = categCollapseBtn.querySelectorAll(".collapse")[0];
@@ -22,14 +24,16 @@ function initCategFilterBtn() {
         $(categCollapsibles).collapse("toggle"); /*imi recunosc pacatele*/
     });
 };
+
 //Search Bar keyup triggers search
 function initSearchBar() {
     searchBar.addEventListener("keyup", function () {
-        RefreshProducts();
+        //RefreshProducts();
+        GetSuggestions();
     })
 };
 
-//Makes Brands and Categories selectable and activates filtering mechanix
+//Brand and Category filtering behavior
 function initFilters() {
     //Brands
     var options = brandCollapseBtn.getElementsByClassName("smallThingies")[0].children;
@@ -44,7 +48,8 @@ function initFilters() {
         options[i].addEventListener("click", FilterToggle);
     }
 };
-//Clicking on a filter
+
+//Filter Item Select event
 function FilterToggle(evt) {
     var filterObj = evt.target;
     if (filterObj.isTriggered) {
@@ -56,7 +61,8 @@ function FilterToggle(evt) {
     }
     RefreshProducts();
 };
-//Gather filtering data
+
+//Gather Filtering Data
 function RefreshProducts() {
     var BrandFilters = [];
     var CategoryFilters = [];
@@ -76,6 +82,7 @@ function RefreshProducts() {
     FilterProducts(searchBar.value, CategoryFilters, BrandFilters);
 };
 
+//Request Filtered Product List
 function FilterProducts(searchText, categories, brands) {
 
     if (searchText === null) {
@@ -108,6 +115,37 @@ function FilterProducts(searchText, categories, brands) {
             alert('Filter Products Request failed.  Returned status of ' + xhr.status);
         }
     };
+    xhr.send();
+}
+
+function GetSuggestions() {
+    while (mylist.firstChild) {
+        mylist.removeChild(mylist.firstChild);
+    }
+
+    var searchText = searchBar.value;
+    if (searchText === null || searchText.length < 3) {
+        return;
+    }
+
+    
+
+    var xhr = GetXmlHttpRequest('GET', 'Product/GetSearchSuggestions/?search=' + encodeURIComponent(searchText));
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var suggestions = JSON.parse(xhr.response);
+            
+            for (var i = 0; i < suggestions.length; i++) {
+                var item = document.createElement("option");
+                item.innerText = suggestions[i];
+                mylist.appendChild(item);
+            }
+        }
+        else {
+            alert('Suggestions Request failed.  Returned status of ' + xhr.status);
+        }
+    }
     xhr.send();
 }
 

@@ -18,14 +18,14 @@ namespace OCS.MVC.App_Start
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
-            
+
 
             bundles.Add(new ScriptBundle("~/bundles/filtering").Include(
                       "~/Scripts/Site/Filtering.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/helpers").Include(
                       "~/Scripts/Site/HttpRequestHelper.js"));
-
+            
             //StyleSheets
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
