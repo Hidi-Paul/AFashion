@@ -4,7 +4,7 @@ using System.Web;
 
 namespace OCS.BusinessLayer.Models
 {
-    public class ProductModel
+    public class CreateProductModel
     {
         public Guid ID { get; set; }
 
@@ -25,6 +25,9 @@ namespace OCS.BusinessLayer.Models
         public string Category { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        public string Image { get; set; }
+        public string ImageExtension { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public byte[] Image { get; set; }
     }
 }

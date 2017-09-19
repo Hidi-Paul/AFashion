@@ -1,12 +1,17 @@
-﻿using OCS.MVC.Helpers;
+﻿using Newtonsoft.Json;
+using OCS.MVC.Helpers;
 using OCS.MVC.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace OCS.MVC.Controllers
 {
@@ -42,6 +47,7 @@ namespace OCS.MVC.Controllers
         {
             filters = HttpUtility.HtmlDecode(filters);
             filters = HttpUtility.UrlEncode(filters);
+            
             var products = await GetFilteredProducts(filters);
 
             return PartialView("ProductListPartial", products);
@@ -69,7 +75,7 @@ namespace OCS.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> AddProduct(CreateProductViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.Image==null)
             {
                 var brands = await GetBrands();
                 var categs = await GetCategories();
@@ -148,7 +154,24 @@ namespace OCS.MVC.Controllers
         }
         private async Task<string> PostProduct(CreateProductViewModel model)
         {
-            HttpResponseMessage response = await HttpRequestHelper.PostAsync("PostProduct", model);
+            byte[] imgData;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                model.Image.InputStream.CopyTo(stream);
+                imgData = stream.ToArray();
+            }
+
+            CreateProductModel requestModel = new CreateProductModel
+            {
+                Name = model.Name,
+                Price = model.Price,
+                Brand = model.Brand,
+                Category = model.Category,
+                ImageExtension=model.Image.FileName.Substring(model.Image.FileName.LastIndexOf(".")),
+                Image = imgData
+            };
+
+            HttpResponseMessage response = await HttpRequestHelper.PostAsJsonAsync("PostProduct", requestModel);
 
             return await response.Content.ReadAsStringAsync();
         }

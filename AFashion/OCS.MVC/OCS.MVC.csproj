@@ -140,6 +140,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\CreateProductModel.cs" />
+    <Compile Include="ValidationAttributes\ImageFileAttribute.cs" />
     <Content Include="Content\Account.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

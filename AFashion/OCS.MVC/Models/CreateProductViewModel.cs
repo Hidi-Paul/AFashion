@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+﻿using OCS.MVC.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace OCS.MVC.Models
 {
@@ -21,8 +22,7 @@ namespace OCS.MVC.Models
         [StringLength(50)]
         public string Category { get; set; }
         
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please add an image.")]
-        [StringLength(200)]
-        public string Image { get; set; }
+        [ImageFile]
+        public HttpPostedFileBase Image { get; set; }
     }
 }

@@ -10,6 +10,13 @@ namespace OCS.BusinessLayer.Config
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<CreateProductModel, ProductModel>()
+                        .ForMember(prod => prod.ID, map => map.MapFrom(p => p.ID))
+                        .ForMember(prod => prod.Name, map => map.MapFrom(p => p.Name))
+                        .ForMember(prod => prod.Price, map => map.MapFrom(p => p.Price))
+                        .ForMember(prod => prod.Brand, map => map.MapFrom(p=>p.Brand))
+                        .ForMember(prod => prod.Category, map => map.MapFrom(p=>p.Category))
+                        .ForMember(prod => prod.Image, map => map.Ignore());
                 cfg.CreateMap<ProductModel, Product>()
                         .ForMember(prod => prod.Name, map => map.MapFrom(p => p.Name))
                         .ForMember(prod => prod.Price, map => map.MapFrom(p => p.Price))

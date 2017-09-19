@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin;
 using OCS.WebApi.App_Start;
 using Owin;
+using System.Configuration;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(OCS.WebApi.Startup))]

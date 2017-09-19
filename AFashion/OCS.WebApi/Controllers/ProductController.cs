@@ -63,7 +63,7 @@ namespace OCS.WebApi.Controllers
         [HttpPost]
         [AuthorizeClaim("Role","Admin")]
         [Route("PostProduct")]
-        public IHttpActionResult PostProduct([FromBody] ProductModel product)
+        public IHttpActionResult PostProduct([FromBody]CreateProductModel product)
         {
             if (!ModelState.IsValid || product == null)
             {
@@ -71,8 +71,8 @@ namespace OCS.WebApi.Controllers
             }
             try
             {
-                var productID = productServices.AddProduct(product);
-                return Created(Request.RequestUri + $"/{productID}", product);
+                ProductModel productModel = productServices.AddProduct(product);
+                return Created(Request.RequestUri + $"/{productModel.ID}", productModel);
             }
             catch (Exception e)
             {

@@ -6,6 +6,7 @@ using OCS.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace OCS.BusinessLayer.Services
 {
@@ -15,13 +16,17 @@ namespace OCS.BusinessLayer.Services
         private readonly IEntityRepository<Brand> brandRepository;
         private readonly IEntityRepository<Category> categoryRepository;
 
+        private readonly IFileServices fileService;
+
         public ProductServices(IEntityRepository<Product> repository,
                                IEntityRepository<Brand> brandRepository,
-                               IEntityRepository<Category> categoryRepository)
+                               IEntityRepository<Category> categoryRepository,
+                               IFileServices fileServices)
         {
             this.repository = repository;
             this.brandRepository = brandRepository;
             this.categoryRepository = categoryRepository;
+            this.fileService = fileServices;
         }
 
         public IEnumerable<ProductModel> GetAll()
@@ -42,8 +47,9 @@ namespace OCS.BusinessLayer.Services
             return mappedProduct;
         }
 
-        public Guid AddProduct(ProductModel productModel)
+        public ProductModel AddProduct(CreateProductModel createProductModel)
         {
+            ProductModel productModel = Mapper.Map<ProductModel>(createProductModel);
             Product product = Mapper.Map<Product>(productModel);
             
             var brand = brandRepository.GetByName(productModel.Brand);
@@ -58,22 +64,29 @@ namespace OCS.BusinessLayer.Services
             }
 
             var prod = repository.GetByName(product.Name);
+            var savePath = "";
             if (prod != null)
             {
-                prod.Image = product.Image;
+                prod.Price = product.Price;
                 prod.Brand = brand;
                 prod.Category = categ;
-                prod.Price = product.Price;
+
+                fileService.DeleteFile(prod.Image);
+                savePath = fileService.SaveFile(createProductModel.Image, prod.Name);
+
                 product = prod;
             }
             else
             {
                 product.ID = Guid.NewGuid();
+                savePath=fileService.SaveFile(createProductModel.Image, product.Name+createProductModel.ImageExtension);
             }
 
+            product.Image = savePath;
             repository.AddOrUpdate(product);
 
-            return product.ID;
+            ProductModel createdProduct = Mapper.Map<ProductModel>(product);
+            return createdProduct;
         }
 
         public IEnumerable<ProductModel> FilteredSearch(string searchString, IEnumerable<CategoryModel> categories = null, IEnumerable<BrandModel> brands = null)

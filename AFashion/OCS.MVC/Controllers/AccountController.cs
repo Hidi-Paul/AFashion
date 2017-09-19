@@ -51,16 +51,24 @@ namespace OCS.MVC.Controllers
 
             //For the weird cases where /some/ SessionID is in the url before login
             //We remove it so it doesn't get dupplicated
-            int a = returnUrl.IndexOf("/g-");
-            if (a != -1)
+            if (returnUrl != null)
             {
-                int b = returnUrl.Substring(a + 1).IndexOf("/");
+                int a = returnUrl.IndexOf("/g-");
+                if (a != -1)
+                {
+                    int b = returnUrl.Substring(a + 1).IndexOf("/");
 
-                var prefix = returnUrl.Substring(0, a);
-                var suffix = returnUrl.Substring(b + 1, returnUrl.Length - b - 1);
-                returnUrl = prefix + suffix;
-                returnUrl = "/" + userRouteData + returnUrl;
+                    var prefix = returnUrl.Substring(0, a);
+                    var suffix = returnUrl.Substring(b + 1, returnUrl.Length - b - 1);
+                    returnUrl = prefix + suffix;
+                    returnUrl = "/" + userRouteData + returnUrl;
+                }
             }
+            else
+            {
+                returnUrl = "/" + userRouteData;
+            }
+            
 
             return Redirect(returnUrl);
         }

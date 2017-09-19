@@ -7,7 +7,7 @@
 <div class="row fashion-form">
     <div class="col-md-6 col-md-offset-3">
         <h3>Create Product</h3>
-        @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data",  @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             <hr />
@@ -47,7 +47,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => Model.Image, new { @class = "col-md-4 control-label" })
                 <div class="col-md-6">
-                    @Html.TextBoxFor(m => m.Image, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Image, new { @type = "file", @class="fileInput" })
                     @Html.ValidationMessageFor(m => m.Image, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -58,5 +58,5 @@
             </div>
         }
     </div>
-    
+
 </div>

@@ -1,12 +1,14 @@
 ﻿@model IEnumerable<OCS.MVC.Models.ProductViewModel>
-
+@{
+    var fileLocation = System.Configuration.ConfigurationManager.AppSettings["StaticFilePath"];
+}
 <div class="storeContent">
     @foreach (var prod in Model)
             {
         <div class="col-md-3 prodCard">
             <div class="prodContainer">
                 <div class="imgContainer">
-                    <img src="@prod.Image" />
+                    <img src="@Url.Content(fileLocation+"/"+prod.Image)" />
                 </div>
 
                 <div class="prodContainer-body">

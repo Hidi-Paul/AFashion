@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OCS.DataAccess.Repositories;
+using System.Web;
 
 namespace OCS.UnitTests.BusinessLogic
 {
@@ -19,6 +20,7 @@ namespace OCS.UnitTests.BusinessLogic
         private Mock<IEntityRepository<Product>> productRepo;
         private Mock<IEntityRepository<Brand>> brandRepo;
         private Mock<IEntityRepository<Category>> categRepo;
+        private Mock<IFileServices> fileServices;
 
         [SetUp]
         public void Init()
@@ -30,7 +32,9 @@ namespace OCS.UnitTests.BusinessLogic
             brandRepo = new Mock<IEntityRepository<Brand>>();
             categRepo = new Mock<IEntityRepository<Category>>();
 
-            service = new ProductServices(productRepo.Object, brandRepo.Object, categRepo.Object);
+            fileServices = new Mock<IFileServices>();
+
+            service = new ProductServices(productRepo.Object, brandRepo.Object, categRepo.Object, fileServices.Object);
         }
 
         [Test]
@@ -126,11 +130,12 @@ namespace OCS.UnitTests.BusinessLogic
         {
             //Arrange
             Product dto = GetProduct("Name1", 1, "TestBrand1", "TestCateg1");
-            ProductModel model = GetProductModel(dto);
+            CreateProductModel model = GetCreateProductModel(dto);
 
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => AreEqual(prod, dto))));
             categRepo.Setup(x => x.GetByName(model.Category)).Returns(dto.Category);
             brandRepo.Setup(x => x.GetByName(model.Brand)).Returns(dto.Brand);
+            fileServices.Setup(x => x.SaveFile(model.Image, model.Name)).Returns(dto.Image);
 
             //Act
             service.AddProduct(model);
@@ -146,11 +151,12 @@ namespace OCS.UnitTests.BusinessLogic
             Guid categID = new Guid();
 
             Product dto = GetProduct("Name1", 1, "TestBrand1", "TestCateg1");
-            ProductModel model = GetProductModel(dto);
+            CreateProductModel model = GetCreateProductModel(dto);
             Category categ = new Category { ID = categID, Name = model.Category };
 
             categRepo.Setup(x => x.GetByName(model.Category)).Returns(categ);
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => prod.Category.ID == categ.ID)));
+            fileServices.Setup(x => x.SaveFile(model.Image, model.Name)).Returns(dto.Image);
 
             //Act
             service.AddProduct(model);
@@ -166,11 +172,12 @@ namespace OCS.UnitTests.BusinessLogic
             Guid brandID = new Guid();
 
             Product dto = GetProduct("Name1", 1, "TestBrand1", "TestCateg1");
-            ProductModel model = GetProductModel(dto);
+            CreateProductModel model = GetCreateProductModel(dto);
             Brand brand = new Brand { ID = brandID, Name = model.Brand };
 
             brandRepo.Setup(x => x.GetByName(model.Brand)).Returns(brand);
             productRepo.Setup(x => x.AddOrUpdate(It.Is<Product>(prod => prod.Brand.ID == brand.ID)));
+            fileServices.Setup(x => x.SaveFile(model.Image, model.Name)).Returns(dto.Image);
 
             //Act
             service.AddProduct(model);
@@ -259,6 +266,20 @@ namespace OCS.UnitTests.BusinessLogic
                 Image = prod.Image
             };
             return model;
+        }
+        private CreateProductModel GetCreateProductModel(Product dto)
+        {
+            byte[] image = null;
+            var item = new CreateProductModel()
+            {
+                ID = dto.ID,
+                Name = dto.Name,
+                Brand = dto.Brand.Name,
+                Category = dto.Category.Name,
+                Price = dto.Price,
+                Image = image
+            };
+            return item;
         }
         private static bool AreEqual(ProductModel model, ProductModel resultModel)
         {

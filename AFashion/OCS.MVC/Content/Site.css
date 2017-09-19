@@ -49,7 +49,10 @@
     margin-right: auto;
 }
 
-
+.fileInput{
+    padding-top:7px;
+    padding-left:4px;
+}
 /*admin version*/
 .navbar-admin {
     background-color: dimgray;

@@ -52,14 +52,26 @@ namespace OCS.MVC.Helpers
             return response;
         }
 
-        public static async Task<HttpResponseMessage> PostAsync(string url, Object data)
+        public static async Task<HttpResponseMessage> PostAsync(string url, HttpContent data)
         {
             HttpResponseMessage response;
-            StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
             using (HttpClient client = GetClient())
             {
-                response = await client.PostAsync($"{ServerAddr}{url}", content);
+                response = await client.PostAsync($"{ServerAddr}{url}", data);
             }
+
+            return response;
+        }
+        public static async Task<HttpResponseMessage> PostAsJsonAsync(string url, Object data)
+        {
+            HttpResponseMessage response;
+
+            using (HttpClient client = GetClient())
+            {
+                response = await client.PostAsJsonAsync($"{ServerAddr}{url}", data);
+            }
+
             return response;
         }
     }

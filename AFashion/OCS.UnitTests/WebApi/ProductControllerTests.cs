@@ -7,6 +7,7 @@ using OCS.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Script.Serialization;
@@ -156,25 +157,28 @@ namespace OCS.UnitTests.WebApi
         public void PostProduct_CallsServiceToPostProduct()
         {
             //Arrange
-            var item = GetProductModel();
-            services.Setup(x => x.AddProduct(item));
+            var item = GetCreateProductModel();
+            var itemModel = GetProductModel(item);
+            services.Setup(x => x.AddProduct(item)).Returns(itemModel);
 
             //Act
             IHttpActionResult result = controller.PostProduct(item);
 
             //Assert
-            services.Verify(x => x.AddProduct(It.IsAny<ProductModel>()), Times.Once);
+            services.Verify(x => x.AddProduct(It.IsAny<CreateProductModel>()), Times.Once);
         }
 
         [Test]
         public void PostProduct_ReturnsCreatedStatusIfProductPosted()
         {
             //Arrange
-            var item = GetProductModel();
-            services.Setup(x => x.AddProduct(item));
+            var createItemModel=GetCreateProductModel();
+            var item = GetProductModel(createItemModel);
+            item.Image = "~/SomeAddr/some_file.jpg";
+            services.Setup(x => x.AddProduct(createItemModel)).Returns(item);
 
             //Act
-            IHttpActionResult result = controller.PostProduct(item);
+            IHttpActionResult result = controller.PostProduct(createItemModel);
 
             //Assert
             Assert.IsNotNull(result);
@@ -306,7 +310,33 @@ namespace OCS.UnitTests.WebApi
             };
             return item;
         }
+        private CreateProductModel GetCreateProductModel()
+        {
+            byte[] image=null;
+            var item = new CreateProductModel()
+            {
+                ID = Guid.NewGuid(),
+                Name = "SampleProduct1",
+                Brand = "SampleBrand1",
+                Category = "SampleCategory1",
+                Price = 122,
+                Image = image
+            };
+            return item;
+        }
+        private ProductModel GetProductModel(CreateProductModel createProductModel)
+        {
 
+            var item = new ProductModel()
+            {
+                ID = createProductModel.ID,
+                Name = createProductModel.Name,
+                Brand = createProductModel.Brand,
+                Category = createProductModel.Category,
+                Price = createProductModel.Price
+            };
+            return item;
+        }
         private bool ProductsMatch(ProductModel modelA, ProductModel modelB, bool ignoreIDs = false)
         {
             return (modelA.ID.Equals(modelB.ID) || ignoreIDs) &&
@@ -316,7 +346,15 @@ namespace OCS.UnitTests.WebApi
                    modelA.Brand.Equals(modelB.Brand) &&
                    modelA.Image.Equals(modelB.Image);
         }
-
+        private bool ProductsMatch(CreateProductModel modelA, ProductModel modelB, bool ignoreIDs = false)
+        {
+            return (modelA.ID.Equals(modelB.ID) || ignoreIDs) &&
+                   modelA.Name.Equals(modelB.Name) &&
+                   modelA.Price == modelB.Price &&
+                   modelA.Category.Equals(modelB.Category) &&
+                   modelA.Brand.Equals(modelB.Brand) &&
+                   modelA.Image.Equals(modelB.Image);
+        }
         #endregion Helpers
     }
 }

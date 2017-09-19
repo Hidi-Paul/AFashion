@@ -46,6 +46,8 @@ namespace OCS.WebApi.App_Start
             container.RegisterType<IEntityRepository<Brand>, EntityRepository<Brand>>();
             container.RegisterType<IEntityRepository<Product>, ProductRepository>();
 
+            container.RegisterType<IFileServices, FileServices>();
+
             container.RegisterType<ICategoryServices, CategoryServices>();
             container.RegisterType<IBrandServices, BrandServices>();
             container.RegisterType<IProductServices, ProductServices>();
