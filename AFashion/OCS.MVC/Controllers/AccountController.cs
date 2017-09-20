@@ -16,6 +16,7 @@ namespace OCS.MVC.Controllers
     public class AccountController : BaseController
     {
         private static string ServerAddr => ConfigurationManager.AppSettings["base-url"];
+        private static string CookieName => ConfigurationManager.AppSettings["Auth-CookieName"];
 
         [HttpGet]
         [AllowAnonymous]
@@ -44,8 +45,9 @@ namespace OCS.MVC.Controllers
 
 
             Guid userSessionId = Guid.NewGuid();
-            string userRouteData = "g-" + userSessionId.ToString();
 
+            string userRouteData = "g-" + userSessionId.ToString();
+            
             //Add To Request to we can access it in the MultiTennantCookieManager
             var context = HttpContext.GetOwinContext().Request.Set<string>("userSessionGuid", userRouteData);
 
