@@ -28,9 +28,13 @@ function initCategFilterBtn() {
 //Search Bar keyup triggers search
 function initSearchBar() {
     searchBar.addEventListener("keyup", function () {
-        //RefreshProducts();
         GetSuggestions();
     })
+    searchBar.addEventListener("keypress", function (e) {
+        if (e.keyCode === 13) {
+            RefreshProducts();
+        }
+    });
 };
 
 //Brand and Category filtering behavior
@@ -124,11 +128,9 @@ function GetSuggestions() {
     }
 
     var searchText = searchBar.value;
-    if (searchText === null || searchText.length < 3) {
+    if (searchText === null || searchText.length < 2) {
         return;
     }
-
-    
 
     var xhr = GetXmlHttpRequest('GET', 'Product/GetSearchSuggestions/?search=' + encodeURIComponent(searchText));
 
@@ -136,11 +138,9 @@ function GetSuggestions() {
         if (xhr.status === 200) {
             var suggestions = JSON.parse(xhr.response);
             
-            for (var i = 0; i < suggestions.length; i++) {
-                var item = document.createElement("option");
-                item.innerText = suggestions[i];
-                mylist.appendChild(item);
-            }
+            $( "#searchBar" ).autocomplete({
+                source: suggestions
+            })
         }
         else {
             alert('Suggestions Request failed.  Returned status of ' + xhr.status);

@@ -1,4 +1,11 @@
-﻿@{
+﻿<script>
+        var Globals = {
+            ServerAddr:'@System.Configuration.ConfigurationManager.AppSettings["mvc-url"]'
+        }
+</script>
+
+
+@{
     if (User.IsInRole("Admin"))
     {
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -9,16 +16,8 @@
     }
 }
 
-<script>
-        var Globals = {
-            ServerAddr:'@System.Configuration.ConfigurationManager.AppSettings["mvc-url"]'
-        }
-</script>
 
 
-@Scripts.Render("~/bundles/jquery")
 
-@Scripts.Render("~/bundles/bootstrap")
-
-
-@Scripts.Render("~/bundles/helpers")
+@Scripts.Render("~/bundles/external")
+@Scripts.Render("~/bundles/custom")

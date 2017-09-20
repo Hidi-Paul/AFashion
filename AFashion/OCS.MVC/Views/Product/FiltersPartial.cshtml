@@ -1,15 +1,13 @@
 ﻿@model OCS.MVC.Models.FiltersViewModel
 
+<link href="~/Content/FilterStyle.css" rel="stylesheet" />
 
 <div class="col-md-2 side-bar">
-    <link href="~/Content/Awesomplete/awesomplete.css" rel="stylesheet" />
-    <script src="~/Scripts/Awesomplete/awesomplete.js" async></script>
     <div class="panel-group">
         @*Search Bar*@
-        <div class="searchContainer panel panel-default filter-bar-item">
+        <div class="searchContainer panel panel-default filter-bar-item ui-widget">
             <input id="searchBar" 
-                   class="awesomplete fill" 
-                   type="text" 
+                   class="fill"
                    placeholder="Search by Name"
                    value="@Model.SearchString" 
                    list="mylist"/> 
@@ -51,4 +49,4 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/filtering")
+<script src="~/Scripts/Site/Filtering.js"></script>

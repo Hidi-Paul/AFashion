@@ -6,34 +6,41 @@ namespace OCS.MVC.App_Start
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            //
+            // Scripts
+            //
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+            bundles.Add(new ScriptBundle("~/bundles/external").Include(
+                "~/Scripts/jquery-{version}.js",
+                "~/Scripts/jquery.cookie.js",
+                "~/Scripts/jquery.validate*",
+                "~/Scripts/JQuery-UI/jquery-ui.js",
+                "~/Scripts/modernizr-*",
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js"
+                ));
 
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/custom").Include(
+                "~/Scripts/Site/HttpRequestHelper.js"
+                ));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            //
+            //  StyleSheets
+            //
 
+            bundles.Add(new StyleBundle("~/Content/external").Include(
+                "~/Content/bootstrap.css",
+                "~/Scripts/JQuery-UI/jquery-ui.css",
+                "~/Scripts/JQuery-UI/jquery-ui.structure.css",
+                "~/Scripts/JQuery-UI/jquery-ui.theme.css"
+                ));
 
-            bundles.Add(new ScriptBundle("~/bundles/filtering").Include(
-                      "~/Scripts/Site/Filtering.js"));
+            bundles.Add(new StyleBundle("~/Content/custom").Include(
+                "~/Content/Site.css",
+                "~/Content/Account.css"
+                ));
 
-            bundles.Add(new ScriptBundle("~/bundles/helpers").Include(
-                      "~/Scripts/Site/HttpRequestHelper.js"));
-            
-            //StyleSheets
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/Site.css",
-                      "~/Content/Account.css",
-                      "~/Content/FilterStyle.css",
-                      "~/Content/ProductStyle.css"));
-
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

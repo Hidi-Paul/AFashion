@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
+    @Styles.Render("~/Content/external")
+    @Styles.Render("~/Content/custom")
+
     <title>@ViewBag.Title</title>
-    <script src="~/Scripts/jquery-3.1.1.js"></script>
-    <script src="~/Scripts/jquery.cookie-1.4.1.min.js"></script>
 </head>
 
 <body>
@@ -30,7 +30,5 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-
-    @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -2,6 +2,7 @@
 @{
     var fileLocation = System.Configuration.ConfigurationManager.AppSettings["StaticFilePath"];
 }
+<link href="~/Content/ProductStyle.css" rel="stylesheet" />
 <div class="storeContent">
     @foreach (var prod in Model)
             {
@@ -16,7 +17,6 @@
                     <p class="prodBrand">@prod.Brand</p>
                     <p class="prodPrice">@prod.Price$</p>
                 </div>
-
             </div>
         </div>
     }
