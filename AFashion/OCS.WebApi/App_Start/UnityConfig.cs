@@ -45,12 +45,15 @@ namespace OCS.WebApi.App_Start
             container.RegisterType<IEntityRepository<Category>, EntityRepository<Category>>();
             container.RegisterType<IEntityRepository<Brand>, EntityRepository<Brand>>();
             container.RegisterType<IEntityRepository<Product>, ProductRepository>();
+            container.RegisterType<IShoppingCartRepository, ShoppingCartRepository>();
 
             container.RegisterType<IFileServices, FileServices>();
 
             container.RegisterType<ICategoryServices, CategoryServices>();
             container.RegisterType<IBrandServices, BrandServices>();
             container.RegisterType<IProductServices, ProductServices>();
+            container.RegisterType<IShoppingCartServices, ShoppingCartServices>();
+
             //RegisterComponents();
 
 

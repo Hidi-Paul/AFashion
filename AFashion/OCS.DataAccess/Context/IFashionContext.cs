@@ -8,5 +8,7 @@ namespace OCS.DataAccess.Context
         DbSet<Brand> Brands { get; set; }
         DbSet<Category> Categories { get; set; }
         DbSet<Product> Products { get; set; }
+        DbSet<ProductOrder> ProductOrders { get; set; }
+        DbSet<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

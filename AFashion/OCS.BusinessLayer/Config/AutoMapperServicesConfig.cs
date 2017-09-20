@@ -11,30 +11,37 @@ namespace OCS.BusinessLayer.Config
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CreateProductModel, ProductModel>()
-                        .ForMember(prod => prod.ID, map => map.MapFrom(p => p.ID))
-                        .ForMember(prod => prod.Name, map => map.MapFrom(p => p.Name))
-                        .ForMember(prod => prod.Price, map => map.MapFrom(p => p.Price))
-                        .ForMember(prod => prod.Brand, map => map.MapFrom(p=>p.Brand))
-                        .ForMember(prod => prod.Category, map => map.MapFrom(p=>p.Category))
-                        .ForMember(prod => prod.Image, map => map.Ignore());
+                        .ForMember(src => src.ID, map => map.MapFrom(dest => dest.ID))
+                        .ForMember(src => src.Name, map => map.MapFrom(dest => dest.Name))
+                        .ForMember(src => src.Price, map => map.MapFrom(dest => dest.Price))
+                        .ForMember(src => src.Brand, map => map.MapFrom(dest => dest.Brand))
+                        .ForMember(src => src.Category, map => map.MapFrom(dest => dest.Category))
+                        .ForMember(src => src.Image, map => map.Ignore());
                 cfg.CreateMap<ProductModel, Product>()
-                        .ForMember(prod => prod.Name, map => map.MapFrom(p => p.Name))
-                        .ForMember(prod => prod.Price, map => map.MapFrom(p => p.Price))
-                        .ForMember(prod => prod.Brand, map => map.Ignore())
-                        .ForMember(prod => prod.Category, map => map.Ignore())
-                        .ForMember(prod => prod.Image, map => map.MapFrom(p => p.Image));
+                        .ForMember(src => src.Name, map => map.MapFrom(dest => dest.Name))
+                        .ForMember(src => src.Price, map => map.MapFrom(dest => dest.Price))
+                        .ForMember(src => src.Image, map => map.MapFrom(dest => dest.Image))
+                        .ForMember(src => src.Brand, map => map.Ignore())
+                        .ForMember(src => src.Category, map => map.Ignore());
 
                 cfg.CreateMap<Product, ProductModel>()
-                        .ForMember(prod => prod.ID, map => map.MapFrom(p => p.ID))
-                        .ForMember(prod => prod.Name, map => map.MapFrom(p => p.Name))
-                        .ForMember(prod => prod.Price, map => map.MapFrom(p => p.Price))
-                        .ForMember(prod => prod.Brand, map => map.MapFrom(p => p.Brand.Name))
-                        .ForMember(prod => prod.Category, map => map.MapFrom(p => p.Category.Name))
-                        .ForMember(prod => prod.Image, map => map.MapFrom(p => p.Image));
+                        .ForMember(src => src.ID, map => map.MapFrom(dest => dest.ID))
+                        .ForMember(src => src.Name, map => map.MapFrom(dest => dest.Name))
+                        .ForMember(src => src.Price, map => map.MapFrom(dest => dest.Price))
+                        .ForMember(src => src.Brand, map => map.MapFrom(dest => dest.Brand.Name))
+                        .ForMember(src => src.Category, map => map.MapFrom(dest => dest.Category.Name))
+                        .ForMember(src => src.Image, map => map.MapFrom(dest => dest.Image));
                 cfg.CreateMap<Category, CategoryModel>()
-                        .ForMember(cat => cat.Name, map => map.MapFrom(p => p.Name));
+                        .ForMember(src => src.Name, map => map.MapFrom(dest => dest.Name));
                 cfg.CreateMap<Brand, BrandModel>()
-                        .ForMember(bran => bran.Name, map => map.MapFrom(p => p.Name));
+                        .ForMember(src => src.Name, map => map.MapFrom(dest => dest.Name));
+
+                cfg.CreateMap<ProductOrder, ProductOrderModel>()
+                        .ForMember(src => src.ProductName, map => map.MapFrom(dest => dest.Product.Name))
+                        .ForMember(src => src.ProductQuantity, map => map.MapFrom(dest => dest.Quantity));
+                cfg.CreateMap<ProductOrderModel, ProductOrder>()
+                        .ForMember(src => src.Quantity, map => map.MapFrom(dest => dest.ProductQuantity))
+                        .ForMember(src => src.Product, map => map.Ignore());
             });
         }
     }
