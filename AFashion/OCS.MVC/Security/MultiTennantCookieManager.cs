@@ -5,13 +5,15 @@ using System.Text.RegularExpressions;
 
 namespace OCS.MVC.Security
 {
-    public class MultiTennantCookieManager : ChunkingCookieManager, ICookieManager
+    public class MultiTennantCookieManager : ICookieManager
     {
+        private ChunkingCookieManager ChunkingCookieManager { get; set; }
+
         private static Regex SessionRegex { get; set; } = InitSessionRegex();
 
-        public MultiTennantCookieManager() : base()
+        public MultiTennantCookieManager()
         {
-
+            ChunkingCookieManager = new ChunkingCookieManager();
         }
 
         private string GetSessionID(IOwinContext context)
@@ -29,16 +31,16 @@ namespace OCS.MVC.Security
         }
 
 
-        public new void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
+        public void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
         {
             var sessionId = "" + context.Request.Get<string>("userSessionGuid");
             
             key = key + sessionId;
 
-            base.AppendResponseCookie(context, key, value, options);
+            ChunkingCookieManager.AppendResponseCookie(context, key, value, options);
         }
 
-        public new void DeleteCookie(IOwinContext context, string key, CookieOptions options)
+        public void DeleteCookie(IOwinContext context, string key, CookieOptions options)
         {
             var sessionId = GetSessionID(context);
 
@@ -47,10 +49,10 @@ namespace OCS.MVC.Security
                 key = key + sessionId;
             }
 
-            base.DeleteCookie(context, key, options);
+            ChunkingCookieManager.DeleteCookie(context, key, options);
         }
 
-        public new string GetRequestCookie(IOwinContext context, string key)
+        public string GetRequestCookie(IOwinContext context, string key)
         {
             var sessionId = GetSessionID(context);
 
@@ -59,7 +61,7 @@ namespace OCS.MVC.Security
                 key = key + sessionId;
             }
 
-            var cookie = base.GetRequestCookie(context, key);
+            var cookie = ChunkingCookieManager.GetRequestCookie(context, key);
             return cookie;
         }
 
