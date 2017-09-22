@@ -1,23 +1,9 @@
 ﻿@model IEnumerable<OCS.MVC.Models.ProductViewModel>
-@{
-    var fileLocation = System.Configuration.ConfigurationManager.AppSettings["StaticFilePath"];
-}
+
 <link href="~/Content/ProductStyle.css" rel="stylesheet" />
 <div class="storeContent">
     @foreach (var prod in Model)
-            {
-        <div class="col-md-3 prodCard">
-            <div class="prodContainer">
-                <div class="imgContainer">
-                    <img src="@Url.Content(fileLocation+"/"+prod.Image)" />
-                </div>
-
-                <div class="prodContainer-body">
-                    <h4>@prod.Name</h4>
-                    <p class="prodBrand">@prod.Brand</p>
-                    <p class="prodPrice">@prod.Price$</p>
-                </div>
-            </div>
-        </div>
+    {
+        Html.RenderPartial("ProductPartial", prod);
     }
 </div>

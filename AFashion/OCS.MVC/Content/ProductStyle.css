@@ -1,31 +1,50 @@
 ﻿/* Fancy Hats*/
 .prodCard {
     padding: 3px;
-}
-    .prodCard:hover {
-        background-color: whitesmoke
-    }
-
-.prodContainer {
-    background-color: white;
+    background-color: white
 }
 
 .imgContainer {
+    position: relative;
     height: 300px;
-    min-width:150px;
+    min-width: 150px;
 }
+
     .imgContainer img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
         display: block;
-        margin: 0 auto;
+        opacity: 1;
+        backface-visibility: hidden;
     }
 
-.prodContainer img {
-    height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .imgContainer:hover img {
+        opacity: 0.6;
+        transition: .4s ease;
+    }
+    .imgContainer:hover .imageOverlay {
+        opacity: 1;
+        transition: .4s ease;
+    }
+    .imgContainer .imageOverlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        opacity: 0;
+    }
+        .imgContainer .imageOverlay input {
+            position:absolute;
+            width: 50%;
+            top: 90%;
+            transform: translateY(-90%);
+            left: 25%;
+
+            border-color:dodgerblue;
+            border-radius:4px;
+        }
+
 
 .prodContainer .prodContainer-body {
     padding-left: 5px;

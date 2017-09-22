@@ -1,0 +1,17 @@
+﻿@model IEnumerable<OCS.MVC.Models.OrderViewModel>
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+<link href="~/Content/OrderStyle.css" rel="stylesheet" />
+
+@Html.AntiForgeryToken()
+<div class="shoppingCartContent">
+    @foreach (var order in Model)
+    {
+        Html.RenderPartial("OrderPartial", order);
+    }
+    <div class="shoppingCartMessage">
+        @ViewBag.Message
+    </div>
+</div>

@@ -142,7 +142,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Models\CreateProductModel.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="ValidationAttributes\ImageFileAttribute.cs" />
     <Content Include="Content\Account.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -150,6 +152,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\FilterStyle.css" />
+    <Content Include="Content\OrderStyle.css" />
     <Content Include="Content\ProductStyle.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -231,6 +234,10 @@
     <Content Include="Views\Account\ForgotPasswordConfirm.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\Product\ProductPartial.cshtml" />
+    <Content Include="Views\Product\SubmitOrderPartial.cshtml" />
+    <Content Include="Views\ShoppingCart\OrderPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

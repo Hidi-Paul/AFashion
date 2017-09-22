@@ -18,10 +18,7 @@
             </div>
             <div class="navbar-header">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li>@Html.ActionLink("Add Product", "AddProduct", "Product")</li>
-                    }
+                    <li>@Html.ActionLink("Shopping Cart", "Index", "ShoppingCart")</li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse">

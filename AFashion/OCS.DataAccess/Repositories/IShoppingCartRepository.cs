@@ -1,11 +1,12 @@
 ﻿using OCS.DataAccess.DTO;
-using System;
 
 namespace OCS.DataAccess.Repositories
 {
     public interface IShoppingCartRepository
     {
         ShoppingCart AddOrUpdate(ShoppingCart entity);
+
+        ProductOrder AddOrUpdate(ProductOrder entity);
 
         ShoppingCart GetByUserName(string userName);
 

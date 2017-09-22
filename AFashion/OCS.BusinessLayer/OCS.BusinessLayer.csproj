@@ -56,7 +56,7 @@
     <Compile Include="Models\BrandModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CreateProductModel.cs" />
-    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ProductOrderModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BrandServices.cs" />

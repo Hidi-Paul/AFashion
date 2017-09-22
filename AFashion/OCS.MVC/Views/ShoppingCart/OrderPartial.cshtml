@@ -1,0 +1,25 @@
+﻿@model OCS.MVC.Models.OrderViewModel
+@{
+    var fileLocation = System.Configuration.ConfigurationManager.AppSettings["StaticFilePath"];
+}
+
+<div class="orderContainer">
+    <div class="row">
+        <div class="col-md-12 fill">
+            <div class="col-md-3 fill">
+                <div class="orderImageContainer">
+                    <img src="@Url.Content(fileLocation + "/" + Model.Image)" />
+                </div>
+            </div>
+            <div class="col-md-6 fill">
+                <a> @Model.ProductName X @Model.ProductQuantity </a>
+            </div>
+            <div class="col-md-3 fill">
+                @using (Html.BeginForm("DeleteOrder", "ShoppingCart", new { model = Model.ProductID }, FormMethod.Post))
+            {
+                    <input class="ui-button ui-widget ui-corner-all" type="submit" value="Remove">
+                }
+            </div>
+        </div>
+    </div>
+</div>

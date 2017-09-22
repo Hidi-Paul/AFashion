@@ -4,5 +4,6 @@ namespace OCS.MVC.Controllers
 {
     public abstract class BaseController : Controller
     {
+
     }
 }

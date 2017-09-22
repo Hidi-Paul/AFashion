@@ -1,0 +1,20 @@
+﻿@model OCS.MVC.Models.ProductViewModel
+@{
+    var fileLocation = System.Configuration.ConfigurationManager.AppSettings["StaticFilePath"];
+}
+
+<div class="col-md-3 prodCard">
+    <div class="prodContainer">
+        <div class="imgContainer">
+            <img src="@Url.Content(fileLocation + "/" + Model.Image)" />
+            <div class="imageOverlay">
+                @{Html.RenderPartial("SubmitOrderPartial", Model.ID);}
+            </div>
+        </div>
+        <div class="prodContainer-body">
+            <h4>@Model.Name</h4>
+            <p class="prodBrand">@Model.Brand</p>
+            <p class="prodPrice">@Model.Price$</p>
+        </div>
+    </div>
+</div>

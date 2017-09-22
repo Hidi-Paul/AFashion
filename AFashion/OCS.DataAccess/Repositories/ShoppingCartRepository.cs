@@ -33,13 +33,33 @@ namespace OCS.DataAccess.Repositories
             }
             return entity;
         }
+        public ProductOrder AddOrUpdate(ProductOrder entity)
+        {
+            var set = DbCon.ProductOrders;
+
+            ProductOrder item = set.Find(entity.ID);
+            if (item != null)
+            {
+                set.Attach(item);
+                DbCon.Entry(entity).State = EntityState.Modified;
+                DbCon.SaveChanges();
+            }
+            else
+            {
+                set.Add(entity);
+                DbCon.SaveChanges();
+            }
+            return entity;
+        }
 
         public ShoppingCart GetByUserName(string userName)
         {
             var set = DbCon.ShoppingCarts;
 
-            ShoppingCart item = set.Where(x => x.UserName.Equals(userName))
-                                   .Include("ProductOrders")
+            ShoppingCart item = set.Include(x => x.ProductOrders)
+                                   .Include("ProductOrders.Product")
+                                   .Where(x => x.UserName.Equals(userName))
+                                   .ToList()
                                    .FirstOrDefault();
             return item;
         }
@@ -50,7 +70,8 @@ namespace OCS.DataAccess.Repositories
 
             ShoppingCart item = set.Find(userName);
 
-            ProductOrder order = item.ProductOrders.Where(x => x.Product.Equals(entity.Product))
+            ProductOrder order = item.ProductOrders
+                                                   .Where(x => x.Product.Equals(entity.Product))
                                                    .FirstOrDefault();
             if (order != null)
             {

@@ -17,6 +17,6 @@ namespace OCS.DataAccess.DTO
         [Column("ShoppingCartUserName")]
         public string UserName { get; set; }
         
-        public virtual IEnumerable<ProductOrder> ProductOrders { get; set; }
+        public virtual ICollection<ProductOrder> ProductOrders { get; set; }
     }
 }

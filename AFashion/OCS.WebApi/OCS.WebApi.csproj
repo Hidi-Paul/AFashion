@@ -168,6 +168,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Helpers\PrincipalExtensions.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FiltersModel.cs" />

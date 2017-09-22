@@ -38,10 +38,13 @@ namespace OCS.BusinessLayer.Config
 
                 cfg.CreateMap<ProductOrder, ProductOrderModel>()
                         .ForMember(src => src.ProductName, map => map.MapFrom(dest => dest.Product.Name))
-                        .ForMember(src => src.ProductQuantity, map => map.MapFrom(dest => dest.Quantity));
+                        .ForMember(src => src.ProductQuantity, map => map.MapFrom(dest => dest.Quantity))
+                        .ForMember(src => src.Image, map => map.MapFrom(dest => dest.Product.Image));
                 cfg.CreateMap<ProductOrderModel, ProductOrder>()
                         .ForMember(src => src.Quantity, map => map.MapFrom(dest => dest.ProductQuantity))
-                        .ForMember(src => src.Product, map => map.Ignore());
+                        .ForMember(src => src.ID, map => map.Ignore())
+                        .ForMember(src => src.Product, map => map.Ignore())
+                        .ForMember(src => src.ShoppingCart, map => map.Ignore());
             });
         }
     }

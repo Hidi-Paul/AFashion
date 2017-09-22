@@ -1,0 +1,8 @@
+﻿@model Guid?
+
+@using (Html.BeginForm("PostProduct", "ShoppingCart", new { model=Model.Value }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <input class="ui-button ui-widget ui-corner-all" type="submit" value="Buy Me!">
+}
