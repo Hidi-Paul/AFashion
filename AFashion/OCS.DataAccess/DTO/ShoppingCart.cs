@@ -19,4 +19,9 @@ namespace OCS.DataAccess.DTO
         
         public virtual ICollection<ProductOrder> ProductOrders { get; set; }
     }
+
+    public class ShoppingCartNotFound : ShoppingCart
+    {
+
+    }
 }

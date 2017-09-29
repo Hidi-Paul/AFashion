@@ -9,54 +9,62 @@ namespace OCS.DataAccess.Repositories
 {
     public class CategoryRepo : IEntityRepository<Category>
     {
-        private readonly IFashionContext DbCon;
+        private readonly IFashionContext dbContext;
+        private readonly DbSet<Category> dbSet;
 
-        public CategoryRepo(IFashionContext DbCon)
+        public CategoryRepo(IFashionContext dbContext)
         {
-            this.DbCon = DbCon;
-        }
-
-        public Category AddOrUpdate(Category entity)
-        {
-            var set = GetDbSet();
-
-            Category result;
-            if (set.Contains(entity))
-            {
-                result = set.Attach(entity);
-                DbCon.Entry(entity).State = EntityState.Modified;
-                DbCon.SaveChanges();
-            }
-            else
-            {
-                result = set.Add(entity);
-                DbCon.SaveChanges();
-            }
-            return result;
-        }
-
-        public ICollection<Category> GetAll()
-        {
-            var set = GetDbSet();
-            return set.ToList();
+            this.dbContext = dbContext;
+            this.dbSet = dbContext.Categories;
         }
 
         public Category GetByID(Guid id)
         {
-            var set = GetDbSet();
-            return set.Where(item => item.ID == id).FirstOrDefault();
+            Category entity = dbSet.Where(item => item.ID == id).FirstOrDefault();
+            if (entity == null)
+                entity = new CategoryNotFound();
+            return entity;
         }
 
         public Category GetByName(string name)
         {
-            var set = GetDbSet();
-            return set.Where(item => item.Name.ToUpper().Equals(name.ToUpper())).FirstOrDefault();
+            Category entity = dbSet.Where(item => item.Name.ToUpper().Equals(name.ToUpper())).FirstOrDefault();
+            if (entity == null)
+                entity = new CategoryNotFound();
+            return entity;
         }
 
-        private DbSet<Category> GetDbSet()
+        public ICollection<Category> GetAll()
         {
-            var set = DbCon.Categories;
-            return set;
+            ICollection<Category> entities = dbSet.ToList();
+
+            return entities;
+        }
+
+        public Category AddOrUpdate(Category entity)
+        {
+            if (dbSet.Contains(entity))
+            {
+                Update(entity);
+            }
+            else
+            {
+                Insert(entity);
+            }
+            return entity;
+        }
+
+        private void Update(Category entity)
+        {
+            dbSet.Attach(entity);
+            dbContext.SetModified(entity);
+            dbContext.SaveChanges();
+        }
+
+        private void Insert(Category entity)
+        {
+            dbSet.Add(entity);
+            dbContext.SaveChanges();
         }
     }
 }

@@ -44,8 +44,8 @@ namespace OCS.BusinessLayer.Services
 
             }
 
-            var orderResult = repository.AddOrUpdate(order);
-            var cartResult = repository.AddOrUpdate(cart);
+            var orderResult = repository.AddOrUpdateOrder(order);
+            var cartResult = repository.AddOrUpdateShoppingCart(cart);
             var mappedOrder = Mapper.Map<ProductOrderModel>(order);
 
             return mappedOrder;
@@ -53,12 +53,12 @@ namespace OCS.BusinessLayer.Services
 
         public void DeleteOrder(ProductOrderModel orderModel, string userName)
         {
-            var order = repository.GetByUserName(userName).ProductOrders
+            var order = repository.GetShoppingCartByUserName(userName).ProductOrders
                                                             .Where(x => x.Product.ID.Equals(orderModel.ProductID))
                                                             .FirstOrDefault();
             if (order != null)
             {
-                repository.Delete(order, userName);
+                repository.DeleteOrder(order, userName);
             }
         }
 
@@ -81,7 +81,7 @@ namespace OCS.BusinessLayer.Services
         #region helpers
         private ShoppingCart GetCart(string userName)
         {
-            ShoppingCart cart = repository.GetByUserName(userName);
+            ShoppingCart cart = repository.GetShoppingCartByUserName(userName);
             if (cart == null)
             {
                 cart = new ShoppingCart()
@@ -91,7 +91,7 @@ namespace OCS.BusinessLayer.Services
                 };
 
 
-                cart = repository.AddOrUpdate(cart);
+                cart = repository.AddOrUpdateShoppingCart(cart);
             }
             if (cart.ProductOrders == null)
             {

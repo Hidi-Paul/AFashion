@@ -8,76 +8,92 @@ namespace OCS.DataAccess.Repositories
 {
     public class ShoppingCartRepository : IShoppingCartRepository
     {
-        private readonly IFashionContext DbCon;
+        private readonly IFashionContext dbContext;
+        private readonly DbSet<ShoppingCart> dbShoppingCartSet;
+        private readonly DbSet<ProductOrder> dbProductOrderSet;
 
-        public ShoppingCartRepository(IFashionContext dbCon)
+        public ShoppingCartRepository(IFashionContext dbContext)
         {
-            this.DbCon = dbCon;
+            this.dbContext = dbContext;
+            dbShoppingCartSet = dbContext.ShoppingCarts;
+            dbProductOrderSet = dbContext.ProductOrders;
         }
 
-        public ShoppingCart AddOrUpdate(ShoppingCart entity)
+        public ShoppingCart AddOrUpdateShoppingCart(ShoppingCart entity)
         {
-            var set = DbCon.ShoppingCarts;
-
-            ShoppingCart item = set.Find(entity.UserName);
-            if (item != null)
+            if (dbShoppingCartSet.Contains(entity))
             {
-                set.Attach(item);
-                DbCon.Entry(entity).State = EntityState.Modified;
-                DbCon.SaveChanges();
+                UpdateShoppingCart(entity);
             }
             else
             {
-                set.Add(entity);
-                DbCon.SaveChanges();
-            }
-            return entity;
-        }
-        public ProductOrder AddOrUpdate(ProductOrder entity)
-        {
-            var set = DbCon.ProductOrders;
-
-            ProductOrder item = set.Find(entity.ID);
-            if (item != null)
-            {
-                set.Attach(item);
-                DbCon.Entry(entity).State = EntityState.Modified;
-                DbCon.SaveChanges();
-            }
-            else
-            {
-                set.Add(entity);
-                DbCon.SaveChanges();
+                InsertShoppingCart(entity);
             }
             return entity;
         }
 
-        public ShoppingCart GetByUserName(string userName)
+        private void UpdateShoppingCart(ShoppingCart entity)
         {
-            var set = DbCon.ShoppingCarts;
-
-            ShoppingCart item = set.Include(x => x.ProductOrders)
-                                   .Include("ProductOrders.Product")
-                                   .Where(x => x.UserName.Equals(userName))
-                                   .ToList()
-                                   .FirstOrDefault();
-            return item;
+            dbShoppingCartSet.Attach(entity);
+            dbContext.SetModified(entity);
+            dbContext.SaveChanges();
         }
 
-        public void Delete(ProductOrder entity, string userName)
+        private void InsertShoppingCart(ShoppingCart entity)
         {
-            var set = DbCon.ShoppingCarts;
+            dbShoppingCartSet.Add(entity);
+            dbContext.SaveChanges();
+        }
 
-            ShoppingCart item = set.Find(userName);
+        public ProductOrder AddOrUpdateOrder(ProductOrder entity)
+        {
+            if (dbProductOrderSet.Contains(entity))
+                UpdateProductOrder(entity);
+            else
+                InsertProductOrder(entity);
+            return entity;
+        }
 
-            ProductOrder order = item.ProductOrders
-                                                   .Where(x => x.Product.Equals(entity.Product))
+        private void UpdateProductOrder(ProductOrder entity)
+        {
+            dbProductOrderSet.Attach(entity);
+            dbContext.SetModified(entity);
+            dbContext.SaveChanges();
+        }
+
+        private void InsertProductOrder(ProductOrder entity)
+        {
+            dbProductOrderSet.Add(entity);
+            dbContext.SaveChanges();
+        }
+
+        public ShoppingCart GetShoppingCartByUserName(string userName)
+        {
+            ShoppingCart entity = dbShoppingCartSet.Include("ProductOrders")
+                                                   .Include("ProductOrders.Product")
+                                                   .Where(x => x.UserName.Equals(userName))
                                                    .FirstOrDefault();
-            if (order != null)
+            if (entity == null)
             {
-                DbCon.Entry(order).State = EntityState.Deleted;
-                DbCon.SaveChanges();
+                entity = new ShoppingCartNotFound();
             }
+            return entity;
+        }
+
+        public void DeleteOrder(ProductOrder entity, string userName)
+        {
+            ShoppingCart cart = GetShoppingCartByUserName(userName);
+
+            if (cart.ProductOrders.Contains(entity))
+            {
+                Delete(entity);
+            }
+        }
+
+        private void Delete(object entity)
+        {
+            dbContext.SetDeleted(entity);
+            dbContext.SaveChanges();
         }
     }
 }

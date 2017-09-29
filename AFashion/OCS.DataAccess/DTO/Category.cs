@@ -20,4 +20,9 @@ namespace OCS.DataAccess.DTO
 
         public virtual ICollection<Product> Products { get; set; }
     }
+
+    public class CategoryNotFound : Category
+    {
+
+    }
 }

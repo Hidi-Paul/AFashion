@@ -4,12 +4,9 @@ namespace OCS.DataAccess.Repositories
 {
     public interface IShoppingCartRepository
     {
-        ShoppingCart AddOrUpdate(ShoppingCart entity);
-
-        ProductOrder AddOrUpdate(ProductOrder entity);
-
-        ShoppingCart GetByUserName(string userName);
-
-        void Delete(ProductOrder entity, string userName);
+        ShoppingCart AddOrUpdateShoppingCart(ShoppingCart entity);
+        ProductOrder AddOrUpdateOrder(ProductOrder entity);
+        ShoppingCart GetShoppingCartByUserName(string userName);
+        void DeleteOrder(ProductOrder entity, string userName);
     }
 }

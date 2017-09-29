@@ -12,7 +12,7 @@ namespace OCS.DataAccess.DTO
         public Guid ID { get; set; }
 
         [Required]
-        [Index(IsUnique =true)]
+        [Index(IsUnique = true)]
         [StringLength(50)]
         [Column("ProductName")]
         public string Name { get; set; }
@@ -31,5 +31,10 @@ namespace OCS.DataAccess.DTO
         [Required]
         [Column("ProductImageUrl")]
         public string Image { get; set; }
+    }
+
+    public class ProductNotFound : Product
+    {
+
     }
 }

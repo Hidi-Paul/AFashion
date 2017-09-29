@@ -78,6 +78,8 @@
     <Compile Include="BusinessLayer\Filters\NameFilterTests.cs" />
     <Compile Include="BusinessLayer\ProductServicesTests.cs" />
     <Compile Include="DataAccess\BrandRepoUnitTests.cs" />
+    <Compile Include="DataAccess\CategoryRepoUnitTests.cs" />
+    <Compile Include="DataAccess\ProductRepoUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebApi\BrandControllerTests.cs" />
     <Compile Include="WebApi\CategoryControllerTests.cs" />

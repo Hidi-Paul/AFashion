@@ -4,25 +4,46 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OCS.DataAccess.Repositories
 {
     public class BrandRepo : IEntityRepository<Brand>
     {
-        private readonly IFashionContext DbContext;
-        private readonly DbSet<Brand> DbSet;
-        
-        public BrandRepo(IFashionContext DbCon)
+        private readonly IFashionContext dbContext;
+        private readonly DbSet<Brand> dbSet;
+
+        public BrandRepo(IFashionContext dbContext)
         {
-            this.DbContext = DbCon;
-            this.DbSet = DbCon.Brands;
+            this.dbContext = dbContext;
+            this.dbSet = dbContext.Brands;
+        }
+
+        public Brand GetByID(Guid id)
+        {
+            Brand entity = dbSet.Where(item => item.ID == id).FirstOrDefault();
+            if (entity == null)
+                entity = new BrandNotFound();
+            return entity;
+        }
+
+        public Brand GetByName(string name)
+        {
+            Brand entity = dbSet.Where(item => item.Name.ToUpper().Equals(name.ToUpper())).FirstOrDefault();
+            if (entity == null)
+                entity = new BrandNotFound();
+            return entity;
+        }
+
+        public ICollection<Brand> GetAll()
+        {
+            ICollection<Brand> entities = dbSet.ToList();
+            
+            return entities;
         }
 
         public Brand AddOrUpdate(Brand entity)
         {
-            if (DbSet.Contains(entity))
+            if (dbSet.Contains(entity))
             {
                 Update(entity);
             }
@@ -35,33 +56,15 @@ namespace OCS.DataAccess.Repositories
 
         private void Update(Brand entity)
         {
-            DbSet.Attach(entity);
-            DbContext.Entry(entity).State = EntityState.Modified;
-            DbContext.SaveChanges();
+            dbSet.Attach(entity);
+            dbContext.SetModified(entity);
+            dbContext.SaveChanges();
         }
 
         private void Insert(Brand entity)
         {
-            DbSet.Add(entity);
-            DbContext.SaveChanges();
-        }
-
-        public ICollection<Brand> GetAll()
-        {
-            var set = DbSet;
-            return set.ToList();
-        }
-
-        public Brand GetByID(Guid id)
-        {
-            var set = DbSet;
-            return set.Where(item => item.ID == id).FirstOrDefault();
-        }
-
-        public Brand GetByName(string name)
-        {
-            var set = DbSet;
-            return set.Where(item => item.Name.ToUpper().Equals(name.ToUpper())).FirstOrDefault();
+            dbSet.Add(entity);
+            dbContext.SaveChanges();
         }
     }
 }

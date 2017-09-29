@@ -22,4 +22,9 @@ namespace OCS.DataAccess.DTO
         [Column("Quantity")]
         public int Quantity { get; set; }
     }
+
+    public class ProductOrderNotFound : ProductOrder
+    {
+
+    }
 }

@@ -7,61 +7,75 @@ using System.Linq;
 
 namespace OCS.DataAccess.Repositories
 {
-    public class ProductRepository : IEntityRepository<Product>
+    public class ProductRepo : IEntityRepository<Product>
     {
-        private readonly IFashionContext DbCon;
+        private readonly IFashionContext dbContext;
+        private readonly DbSet<Product> dbSet;
 
-        public ProductRepository(IFashionContext dbCon)
+        public ProductRepo(IFashionContext dbContext)
         {
-            this.DbCon = dbCon;
+            this.dbContext = dbContext;
+            this.dbSet = dbContext.Products;
         }
 
-        public Product AddOrUpdate(Product entity)
+        public Product GetByID(Guid id)
         {
-            var set = DbCon.Products;
-
-            Product item = set.Find(entity.ID);
-            if (item != null)
+            Product entity = dbSet.Include("Brand")
+                                  .Include("Category")
+                                  .Where(x => x.ID.Equals(id))
+                                  .FirstOrDefault();
+            if (entity == null)
             {
-                set.Attach(entity);
-                DbCon.Entry(entity).State = EntityState.Modified;
-                DbCon.SaveChanges();
+                entity = new ProductNotFound();
             }
-            else
+            return entity;
+        }
+
+        public Product GetByName(string name)
+        {
+            Product entity = dbSet.Include("Brand")
+                                  .Include("Category")
+                                  .Where(x => x.Name.Equals(name))
+                                  .FirstOrDefault();
+            if (entity == null)
             {
-                set.Add(entity);
-                DbCon.SaveChanges();
+                return new ProductNotFound();
             }
             return entity;
         }
 
         public ICollection<Product> GetAll()
         {
-            var items = DbCon.Products.Include("Category")
-                                    .Include("Brand");
-            return items.ToList();
+            ICollection<Product> entities = dbSet.Include("Brand")
+                                                 .Include("Category")
+                                                 .ToList();
+            return entities;
         }
 
-        public Product GetByID(Guid id)
+        public Product AddOrUpdate(Product entity)
         {
-            var set = DbCon.Products;
-
-            var item = set.Include("Category")
-                         .Include("Brand")
-                         .Where(x => x.ID.Equals(id))
-                         .FirstOrDefault();
-            return item;
+            if (dbSet.Contains(entity))
+            {
+                Update(entity);
+            }
+            else
+            {
+                Insert(entity);
+            }
+            return entity;
         }
 
-        public Product GetByName(string name)
+        private void Update(Product entity)
         {
-            var set = DbCon.Products;
+            dbSet.Attach(entity);
+            dbContext.SetModified(entity);
+            dbContext.SaveChanges();
+        }
 
-            var item = set.Include("Category")
-                          .Include("Brand")
-                          .Where(x => x.Name.Equals(name))
-                          .FirstOrDefault();
-            return item;
+        private void Insert(Product entity)
+        {
+            dbSet.Add(entity);
+            dbContext.SaveChanges();
         }
     }
 }
