@@ -42,8 +42,8 @@ namespace OCS.WebApi.App_Start
 
             container.RegisterType<IFashionContext,FashionContext>(new PerResolveLifetimeManager());
             
-            container.RegisterType<IEntityRepository<Category>, EntityRepository<Category>>();
-            container.RegisterType<IEntityRepository<Brand>, EntityRepository<Brand>>();
+            container.RegisterType<IEntityRepository<Category>, CategoryRepo>();
+            container.RegisterType<IEntityRepository<Brand>, BrandRepo>();
             container.RegisterType<IEntityRepository<Product>, ProductRepository>();
             container.RegisterType<IShoppingCartRepository, ShoppingCartRepository>();
 

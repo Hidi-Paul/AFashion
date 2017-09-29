@@ -8,7 +8,7 @@ namespace OCS.DataAccess.Repositories
     {
         TEntity GetByID(Guid id);
         TEntity GetByName(string name);
-        IEnumerable<TEntity> GetAll();
+        ICollection<TEntity> GetAll();
         TEntity AddOrUpdate(TEntity entity);
     }
 }

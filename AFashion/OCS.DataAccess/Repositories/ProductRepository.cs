@@ -35,11 +35,11 @@ namespace OCS.DataAccess.Repositories
             return entity;
         }
 
-        public IEnumerable<Product> GetAll()
+        public ICollection<Product> GetAll()
         {
             var items = DbCon.Products.Include("Category")
                                     .Include("Brand");
-            return items;
+            return items.ToList();
         }
 
         public Product GetByID(Guid id)
