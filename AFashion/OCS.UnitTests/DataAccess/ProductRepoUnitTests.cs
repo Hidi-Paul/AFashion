@@ -13,7 +13,7 @@ namespace OCS.UnitTests.DataAccess
     [TestFixture]
     public class ProductRepoUnitTests
     {
-        private ProductRepo ProductRepo;
+        private ProductRepo productRepo;
         private Mock<IFashionContext> dbContext;
         private Mock<DbSet<Product>> dbSet;
         private IQueryable<Product> testSamples;
@@ -31,14 +31,12 @@ namespace OCS.UnitTests.DataAccess
 
             //QQ: This cheats the include Brand and Category Tests but allows others to work
             //Its here cuz I dont know how to solve that problem yet
-            dbSet.Setup(x => x.Include("Brand")).Returns(dbSet.Object);
-            dbSet.Setup(x => x.Include("Category")).Returns(dbSet.Object);
+            dbSet.Setup(x => x.Include(It.IsAny<string>())).Returns(dbSet.Object);
 
             dbContext = new Mock<IFashionContext>();
             dbContext.Setup(x => x.Products).Returns(dbSet.Object);
-
-
-            ProductRepo = new ProductRepo(dbContext.Object);
+            
+            productRepo = new ProductRepo(dbContext.Object);
         }
 
         private IQueryable<Product> GenerateDbSet()
@@ -83,7 +81,7 @@ namespace OCS.UnitTests.DataAccess
             Guid id = Product.ID;
 
             //Act
-            var result = ProductRepo.GetByID(id);
+            var result = productRepo.GetByID(id);
 
             //Assert
             Assert.AreEqual(Product, result);
@@ -97,7 +95,7 @@ namespace OCS.UnitTests.DataAccess
             Guid id = Product.ID;
 
             //Act
-            var result = ProductRepo.GetByID(id);
+            var result = productRepo.GetByID(id);
 
             //Assert
             Assert.AreEqual(Product.Brand, result.Brand);
@@ -111,7 +109,7 @@ namespace OCS.UnitTests.DataAccess
             Guid id = Product.ID;
 
             //Act
-            var result = ProductRepo.GetByID(id);
+            var result = productRepo.GetByID(id);
 
             //Assert
             Assert.AreEqual(Product.Category, result.Category);
@@ -124,7 +122,7 @@ namespace OCS.UnitTests.DataAccess
             Guid id = Guid.NewGuid();
 
             //Act
-            var result = ProductRepo.GetByID(id);
+            var result = productRepo.GetByID(id);
 
             //Assert
             Assert.IsTrue(result is ProductNotFound);
@@ -138,7 +136,7 @@ namespace OCS.UnitTests.DataAccess
             string name = Product.Name;
 
             //Act
-            var result = ProductRepo.GetByName(name);
+            var result = productRepo.GetByName(name);
 
             //Assert
             Assert.AreEqual(Product, result);
@@ -152,7 +150,7 @@ namespace OCS.UnitTests.DataAccess
             string name = Product.Name;
 
             //Act
-            var result = ProductRepo.GetByName(name);
+            var result = productRepo.GetByName(name);
 
             //Assert
             Assert.AreEqual(Product.Brand, result.Brand);
@@ -166,7 +164,7 @@ namespace OCS.UnitTests.DataAccess
             string name = Product.Name;
 
             //Act
-            var result = ProductRepo.GetByName(name);
+            var result = productRepo.GetByName(name);
 
             //Assert
             Assert.AreEqual(Product.Category, result.Category);
@@ -179,7 +177,7 @@ namespace OCS.UnitTests.DataAccess
             string name = "Nonexistant Name";
 
             //Act
-            var result = ProductRepo.GetByName(name);
+            var result = productRepo.GetByName(name);
 
             //Assert
             Assert.IsTrue(result is ProductNotFound);
@@ -191,7 +189,7 @@ namespace OCS.UnitTests.DataAccess
             //Arrange
 
             //Act
-            var results = ProductRepo.GetAll();
+            var results = productRepo.GetAll();
 
             //Assert
             Assert.IsTrue(results.Count == testSamples.Count());
@@ -203,7 +201,7 @@ namespace OCS.UnitTests.DataAccess
             //Arrange
 
             //Act
-            var results = ProductRepo.GetAll();
+            var results = productRepo.GetAll();
 
             //Assert
             for (int i = 0; i < testSamples.Count(); i++)
@@ -218,7 +216,7 @@ namespace OCS.UnitTests.DataAccess
             //Arrange
 
             //Act
-            var results = ProductRepo.GetAll();
+            var results = productRepo.GetAll();
 
             //Assert
             for (int i = 0; i < testSamples.Count(); i++)
@@ -233,7 +231,7 @@ namespace OCS.UnitTests.DataAccess
             //Arrange
 
             //Act
-            var results = ProductRepo.GetAll();
+            var results = productRepo.GetAll();
 
             //Assert
             for (int i = 0; i < testSamples.Count(); i++)
@@ -248,10 +246,10 @@ namespace OCS.UnitTests.DataAccess
             //Arrange
             Product Product = GenerateNewProduct();
             dbSet.Setup(x => x.Add(Product)).Returns(Product);
-            dbContext.Setup(x => x.SaveChanges()).Returns(0);
+            dbContext.Setup(x => x.SaveChanges()).Returns(1);
 
             //Act
-            ProductRepo.AddOrUpdate(Product);
+            productRepo.AddOrUpdate(Product);
 
             //Assert
             dbSet.Verify(x => x.Add(Product), Times.Once);
@@ -274,6 +272,21 @@ namespace OCS.UnitTests.DataAccess
         }
 
         [Test]
+        public void AddOrUpdate_GivenNewProduct_ReturnsStoredProduct()
+        {
+            //Arrange
+            Product product = GenerateNewProduct();
+            dbSet.Setup(x => x.Add(product)).Returns(product);
+            dbContext.Setup(x => x.SaveChanges()).Returns(1);
+
+            //Act
+            Product result = productRepo.AddOrUpdate(product);
+
+            //Assert
+            Assert.AreEqual(result, product);
+        }
+
+        [Test]
         public void AddOrUpdate_GivenExistingProduct_UpdatesItInTheDb()
         {
             //Arrange
@@ -282,12 +295,27 @@ namespace OCS.UnitTests.DataAccess
             dbContext.Setup(x => x.SaveChanges()).Returns(0);
 
             //Act
-            ProductRepo.AddOrUpdate(Product);
+            productRepo.AddOrUpdate(Product);
 
             //Assert
             dbSet.Verify(x => x.Attach(Product), Times.Once);
             dbContext.Verify(x => x.SetModified(Product), Times.Once);
             dbContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+
+        [Test]
+        public void AddOrUpdate_GivenExistingProduct_ReturnsUpdatedProduct()
+        {
+            //Arrange
+            Product product = testSamples.ElementAt(3);
+            dbSet.Setup(x => x.Attach(product)).Returns(product);
+            dbContext.Setup(x => x.SaveChanges()).Returns(0);
+
+            //Act
+            Product result = productRepo.AddOrUpdate(product);
+
+            //Assert
+            Assert.AreEqual(result, product);
         }
     }
 }

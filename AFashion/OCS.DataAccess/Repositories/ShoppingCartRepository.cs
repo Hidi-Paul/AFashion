@@ -67,33 +67,41 @@ namespace OCS.DataAccess.Repositories
             dbContext.SaveChanges();
         }
 
-        public ShoppingCart GetShoppingCartByUserName(string userName)
-        {
-            ShoppingCart entity = dbShoppingCartSet.Include("ProductOrders")
-                                                   .Include("ProductOrders.Product")
-                                                   .Where(x => x.UserName.Equals(userName))
-                                                   .FirstOrDefault();
-            if (entity == null)
-            {
-                entity = new ShoppingCartNotFound();
-            }
-            return entity;
-        }
-
         public void DeleteOrder(ProductOrder entity, string userName)
         {
-            ShoppingCart cart = GetShoppingCartByUserName(userName);
-
-            if (cart.ProductOrders.Contains(entity))
+            if (UsersCartContainsProductOrder(userName, entity))
             {
                 Delete(entity);
             }
+        }
+
+        private bool UsersCartContainsProductOrder(string userName, ProductOrder entity)
+        {
+            ShoppingCart cart = entity.ShoppingCart;
+
+            if ( (cart!=null) && (userName.Equals(cart.UserName)) )
+                return true;
+            return false;
         }
 
         private void Delete(object entity)
         {
             dbContext.SetDeleted(entity);
             dbContext.SaveChanges();
+        }
+
+        public ShoppingCart GetShoppingCartByUserName(string userName)
+        {
+            ShoppingCart entity = dbShoppingCartSet.Include("ProductOrders")
+                                                   .Include("ProductOrders.Product")
+                                                   .Where(x => x.UserName.Equals(userName))
+                                                   .FirstOrDefault();
+
+            if (entity == null)
+            {
+                entity = new ShoppingCartNotFound();
+            }
+            return entity;
         }
     }
 }
